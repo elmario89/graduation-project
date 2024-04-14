@@ -5,7 +5,6 @@ import { AdminGuard } from '../auth/admin.guard';
 import { Teacher } from './teacher.model';
 import { TeacherService } from './teacher.service';
 import { CreateTeacherDto } from './dto/create-teacher-dto';
-import { Group } from '../groups/group.model';
 
 @ApiTags('Teachers')
 @Controller('teachers')

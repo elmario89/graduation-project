@@ -27,4 +27,13 @@ export class GroupsController {
   getGroupById(@Param('id') id: string) {
     return this.groupsService.getGroupById(id);
   }
+
+  @ApiOperation({ summary: 'Get all groups' })
+  @ApiResponse({ status: 200, type: Group })
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
+  getAllDisciplines() {
+    return this.groupsService.getAllGroups();
+  }
 }

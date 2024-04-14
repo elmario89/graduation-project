@@ -1,6 +1,14 @@
-import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
+import {
+  Column,
+  DataType,
+  HasMany,
+  HasOne,
+  Model,
+  Table,
+} from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
 import { Student } from '../students/student.model';
+import { Schedule } from '../schedule/schedule.model';
 
 interface GroupCreationAttrs {
   name: string;
@@ -26,4 +34,7 @@ export class Group extends Model<Group, GroupCreationAttrs> {
 
   @HasMany(() => Student)
   students: Student[];
+
+  @HasOne(() => Schedule)
+  schedule: Schedule;
 }

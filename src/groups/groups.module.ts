@@ -4,13 +4,14 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { AuthModule } from '../auth/auth.module';
 import { Group } from './group.model';
 import { GroupsController } from './groups.controller';
-import { Student } from '../students/student.model';
+import { Schedule } from '../schedule/schedule.model';
+// import { Schedule } from '../schedules/schedule.model';
 
 @Module({
   providers: [GroupsService],
   controllers: [GroupsController],
   imports: [
-    SequelizeModule.forFeature([Group, Student]),
+    SequelizeModule.forFeature([Schedule, Group]),
     forwardRef(() => AuthModule),
   ],
   exports: [GroupsService],

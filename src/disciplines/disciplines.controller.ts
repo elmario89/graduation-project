@@ -25,7 +25,7 @@ export class DisciplinesController {
   @Get()
   @UseGuards(JwtAuthGuard)
   @UseGuards(AdminGuard)
-  getAllTeachers() {
+  getAllDisciplines() {
     return this.disciplinesService.getAllDisciplines();
   }
 }

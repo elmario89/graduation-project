@@ -13,6 +13,8 @@ import { Teacher } from './teachers/teacher.model';
 import { Discipline } from './disciplines/discipline.model';
 import { DisciplinesModule } from './disciplines/disciplines.module';
 import { TeacherDisciplines } from './teachers/teacher-disciplines.model';
+import { Schedule } from './schedule/schedule.model';
+import { SchedulesModule } from './schedule/schedules.module';
 
 @Module({
   imports: [
@@ -26,7 +28,15 @@ import { TeacherDisciplines } from './teachers/teacher-disciplines.model';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User, Group, Student, Teacher, Discipline, TeacherDisciplines],
+      models: [
+        User,
+        Group,
+        Student,
+        Teacher,
+        Discipline,
+        TeacherDisciplines,
+        Schedule,
+      ],
       autoLoadModels: true,
     }),
     UsersModule,
@@ -35,6 +45,7 @@ import { TeacherDisciplines } from './teachers/teacher-disciplines.model';
     StudentsModule,
     TeacherModule,
     DisciplinesModule,
+    SchedulesModule,
   ],
 })
 export class AppModule {}

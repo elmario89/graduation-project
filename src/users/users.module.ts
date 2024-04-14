@@ -4,7 +4,6 @@ import { UsersService } from './users.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from './user.model';
 import { AuthModule } from '../auth/auth.module';
-import { Group } from '../groups/group.model';
 
 @Module({
   controllers: [UsersController],

@@ -3,7 +3,7 @@ import { hash } from 'bcryptjs';
 import { InjectModel } from '@nestjs/sequelize';
 import { Student } from './student.model';
 import { CreateStudentDto } from './dto/create-student-dto';
-import {GroupsService} from "../groups/groups.service";
+import { GroupsService } from '../groups/groups.service';
 
 @Injectable()
 export class StudentsService {
@@ -29,8 +29,8 @@ export class StudentsService {
     const group = await this.groupsService.getGroupById(groupId);
 
     return {
-        group,
-        students,
-    }
+      group,
+      students,
+    };
   }
 }

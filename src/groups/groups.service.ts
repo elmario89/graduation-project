@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import {Op} from "sequelize";
 import { Group } from './group.model';
 import { CreateGroupDto } from './dto/create-group-dto';
-import {Student} from "../students/student.model";
-import {UserRole} from "../enums/user-role.enum";
+import { Student } from '../students/student.model';
 
 @Injectable()
 export class GroupsService {
@@ -15,6 +13,9 @@ export class GroupsService {
   }
 
   async getGroupById(id: string) {
-    return await this.groupRepository.findOne({ where: { id }, include: Student });
+    return await this.groupRepository.findOne({
+      where: { id },
+      include: Student,
+    });
   }
 }

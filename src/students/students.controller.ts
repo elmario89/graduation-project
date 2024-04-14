@@ -1,19 +1,11 @@
 import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { User } from '../users/user.model';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AdminGuard } from '../auth/admin.guard';
-import { CreateUserDto } from '../users/dto/create-user-dto';
 import { Student } from './student.model';
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student-dto';
-import {GetStudentByGroupDto} from "./dto/get-student-by-group-dto";
-import {Group} from "../groups/group.model";
-
-interface StudentByIdResponse {
-  students: Student[];
-  group: Group;
-}
+import { GetStudentByGroupDto } from './dto/get-student-by-group-dto';
 
 @ApiTags('Students')
 @Controller('students')

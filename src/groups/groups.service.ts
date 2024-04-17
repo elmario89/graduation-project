@@ -4,10 +4,14 @@ import { Group } from './group.model';
 import { CreateGroupDto } from './dto/create-group-dto';
 import { Student } from '../students/student.model';
 import { Schedule } from '../schedule/schedule.model';
+import { TeacherService } from '../teachers/teacher.service';
 
 @Injectable()
 export class GroupsService {
-  constructor(@InjectModel(Group) private groupRepository: typeof Group) {}
+  constructor(
+    @InjectModel(Group) private groupRepository: typeof Group,
+    private readonly teachersService: TeacherService,
+  ) {}
 
   async createGroup(dto: CreateGroupDto) {
     return await this.groupRepository.create(dto);

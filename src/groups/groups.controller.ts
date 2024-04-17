@@ -33,7 +33,7 @@ export class GroupsController {
   @Get()
   @UseGuards(JwtAuthGuard)
   @UseGuards(AdminGuard)
-  getAllDisciplines() {
+  getAllGroups() {
     return this.groupsService.getAllGroups();
   }
 }

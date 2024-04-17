@@ -2,6 +2,7 @@ import {
   BelongsToMany,
   Column,
   DataType,
+  HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
@@ -9,6 +10,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { UserRole } from '../enums/user-role.enum';
 import { Discipline } from '../disciplines/discipline.model';
 import { TeacherDisciplines } from './teacher-disciplines.model';
+import { Schedule } from '../schedule/schedule.model';
 
 interface TeacherCreationAttrs {
   login: string;
@@ -30,7 +32,7 @@ export class Teacher extends Model<Teacher, TeacherCreationAttrs> {
     primaryKey: true,
     unique: true,
   })
-  id: number;
+  id: string;
 
   @ApiProperty({ example: 'mister', description: 'Teacher login' })
   @Column({ type: DataType.STRING, unique: true, allowNull: false })
@@ -58,4 +60,7 @@ export class Teacher extends Model<Teacher, TeacherCreationAttrs> {
 
   @BelongsToMany(() => Discipline, () => TeacherDisciplines)
   disciplines: Discipline[];
+
+  @HasMany(() => Schedule)
+  schedules: Schedule[];
 }

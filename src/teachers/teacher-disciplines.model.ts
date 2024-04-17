@@ -16,7 +16,7 @@ export class TeacherDisciplines extends Model<TeacherDisciplines> {
     primaryKey: true,
     unique: true,
   })
-  id: number;
+  id: string;
 
   @ForeignKey(() => Teacher)
   @Column({

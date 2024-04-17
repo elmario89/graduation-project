@@ -30,7 +30,7 @@ export class Student extends Model<Student, StudentCreationAttrs> {
     primaryKey: true,
     unique: true,
   })
-  id: number;
+  id: string;
 
   @ApiProperty({ example: 'mister', description: 'Student login' })
   @Column({ type: DataType.STRING, unique: true, allowNull: false })
@@ -50,9 +50,8 @@ export class Student extends Model<Student, StudentCreationAttrs> {
 
   @ApiProperty({ example: UserRole.Student, description: 'Student role' })
   @Column({
-    type: DataType.ENUM(String(UserRole.Student)),
+    type: DataType.ENUM(...Object.values(UserRole.Student)),
     defaultValue: UserRole.Student,
-    allowNull: false,
   })
   role: UserRole;
 

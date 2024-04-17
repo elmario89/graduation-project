@@ -1,13 +1,14 @@
 import {
   BelongsToMany,
   Column,
-  DataType,
+  DataType, HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
 import { Teacher } from '../teachers/teacher.model';
 import { TeacherDisciplines } from '../teachers/teacher-disciplines.model';
+import { Schedule } from '../schedule/schedule.model';
 
 interface DisciplineCreationAttrs {
   name: string;
@@ -25,7 +26,7 @@ export class Discipline extends Model<Discipline, DisciplineCreationAttrs> {
     primaryKey: true,
     unique: true,
   })
-  id: number;
+  id: string;
 
   @ApiProperty({
     example: 'Дискретная математика',
@@ -36,4 +37,7 @@ export class Discipline extends Model<Discipline, DisciplineCreationAttrs> {
 
   @BelongsToMany(() => Teacher, () => TeacherDisciplines)
   teachers: Teacher[];
+
+  @HasMany(() => Schedule)
+  schedules: Schedule[];
 }

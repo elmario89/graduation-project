@@ -14,6 +14,13 @@ interface GroupCreationAttrs {
   name: string;
 }
 
+export interface Test {
+  name: string;
+  time: Date;
+  teacherId: string;
+  disciplineId: string;
+}
+
 @Table({ tableName: 'groups' })
 export class Group extends Model<Group, GroupCreationAttrs> {
   @ApiProperty({
@@ -26,7 +33,7 @@ export class Group extends Model<Group, GroupCreationAttrs> {
     primaryKey: true,
     unique: true,
   })
-  id: number;
+  id: string;
 
   @ApiProperty({ example: '4262', description: 'Group name' })
   @Column({ type: DataType.STRING, unique: true, allowNull: false })
@@ -35,6 +42,20 @@ export class Group extends Model<Group, GroupCreationAttrs> {
   @HasMany(() => Student)
   students: Student[];
 
-  @HasOne(() => Schedule)
-  schedule: Schedule;
+  @HasMany(() => Schedule)
+  schedules: Schedule[];
+
+  @ApiProperty({
+    example: '2024-04-14 23:11:08.371+03',
+    description: 'Education start date',
+  })
+  @Column({ type: DataType.DATE, allowNull: false })
+  start: Date;
+
+  @ApiProperty({
+    example: '2024-04-14 23:11:08.371+03',
+    description: 'Education finish date',
+  })
+  @Column({ type: DataType.DATE, allowNull: false })
+  finish: Date;
 }

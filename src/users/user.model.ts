@@ -20,7 +20,7 @@ export class User extends Model<User, UserCreationAttrs> {
     primaryKey: true,
     unique: true,
   })
-  id: number;
+  id: string;
 
   @ApiProperty({ example: 'mister', description: 'User login' })
   @Column({ type: DataType.STRING, unique: true, allowNull: false })

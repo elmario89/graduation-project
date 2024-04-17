@@ -6,12 +6,18 @@ import { Discipline } from './discipline.model';
 import { DisciplinesController } from './disciplines.controller';
 import { Teacher } from '../teachers/teacher.model';
 import { TeacherDisciplines } from '../teachers/teacher-disciplines.model';
+import { Schedule } from '../schedule/schedule.model';
 
 @Module({
   providers: [DisciplinesService],
   controllers: [DisciplinesController],
   imports: [
-    SequelizeModule.forFeature([Discipline, Teacher, TeacherDisciplines]),
+    SequelizeModule.forFeature([
+      Discipline,
+      Teacher,
+      TeacherDisciplines,
+      Schedule,
+    ]),
     forwardRef(() => AuthModule),
   ],
   exports: [DisciplinesService],

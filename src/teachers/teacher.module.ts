@@ -14,5 +14,6 @@ import { TeacherDisciplines } from './teacher-disciplines.model';
     SequelizeModule.forFeature([Teacher, Discipline, TeacherDisciplines]),
     forwardRef(() => AuthModule),
   ],
+  exports: [TeacherService],
 })
 export class TeacherModule {}

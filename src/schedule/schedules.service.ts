@@ -12,4 +12,25 @@ export class SchedulesService {
   async addSchedule(dto: CreateScheduleDto) {
     return await this.scheduleRepository.create(dto);
   }
+
+  async getScheduleByGroupId(groupId: string) {
+    return await this.scheduleRepository.findAll({
+      where: { groupId },
+      include: { all: true },
+    });
+  }
+
+  async getScheduleByTeacherId(teacherId: string) {
+    return await this.scheduleRepository.findAll({
+      where: { teacherId },
+      include: { all: true },
+    });
+  }
+
+  async getAllSchedules() {
+    return await this.scheduleRepository.findAll({
+      include: { all: true },
+      order: [['updatedAt', 'DESC']],
+    });
+  }
 }

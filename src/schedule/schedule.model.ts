@@ -8,9 +8,16 @@ import {
 } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
 import { Group } from '../groups/group.model';
+import { Teacher } from '../teachers/teacher.model';
+import { Discipline } from '../disciplines/discipline.model';
+import { DayOfWeek } from '../enums/day-of-week.enum';
 
 interface ScheduleCreationAttrs {
-  name: string;
+  date: Date;
+  teacherId: string;
+  disciplineId: string;
+  groupId: string;
+  day: DayOfWeek;
 }
 
 @Table({ tableName: 'schedules' })
@@ -25,11 +32,43 @@ export class Schedule extends Model<Schedule, ScheduleCreationAttrs> {
     primaryKey: true,
     unique: true,
   })
-  id: number;
+  id: string;
 
-  @ApiProperty({ example: 'mister', description: 'Schedule name' })
-  @Column({ type: DataType.STRING, allowNull: false })
-  name: string;
+  @ApiProperty({
+    example: '23:11:08',
+    description: 'Education finish date',
+  })
+  @Column({ type: DataType.TIME, allowNull: false })
+  time: Date;
+
+  @ApiProperty({ example: DayOfWeek.Monday, description: 'Day of the week' })
+  @Column({
+    type: DataType.ENUM(...Object.values(DayOfWeek)),
+    allowNull: false,
+  })
+  dayOfWeek: DayOfWeek;
+
+  @BelongsTo(() => Teacher)
+  teacher: Teacher;
+
+  @ApiProperty({
+    example: 'b70f4034-5328-4c02-b652-d4a4414f3a29',
+    description: 'Teacher id',
+  })
+  @ForeignKey(() => Teacher)
+  @Column({ type: DataType.UUID, allowNull: false })
+  teacherId: string;
+
+  @BelongsTo(() => Discipline)
+  discipline: Discipline;
+
+  @ApiProperty({
+    example: 'b70f4034-5328-4c02-b652-d4a4414f3a29',
+    description: 'Discipline id',
+  })
+  @ForeignKey(() => Discipline)
+  @Column({ type: DataType.UUID, allowNull: false })
+  disciplineId: string;
 
   @BelongsTo(() => Group)
   group: Group;

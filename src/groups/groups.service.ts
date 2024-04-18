@@ -13,6 +13,13 @@ export class GroupsService {
     return await this.groupRepository.create(dto);
   }
 
+  async updateGroup(dto: CreateGroupDto & { id: string }) {
+    return await this.groupRepository.update(
+      { ...dto },
+      { where: { id: dto.id } },
+    );
+  }
+
   async getGroupById(id: string) {
     return await this.groupRepository.findOne({
       where: { id },

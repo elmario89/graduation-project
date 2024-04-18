@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Group } from './group.model';
 import { CreateGroupDto } from './dto/create-group-dto';
@@ -18,6 +18,15 @@ export class GroupsController {
   @UseGuards(AdminGuard)
   create(@Body() groupDto: CreateGroupDto) {
     return this.groupsService.createGroup(groupDto);
+  }
+
+  @ApiOperation({ summary: 'Update group' })
+  @ApiResponse({ status: 200, type: Group })
+  @Put('/:id')
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
+  update(@Param('id') id: string, @Body() groupDto: CreateGroupDto) {
+    return this.groupsService.updateGroup({ ...groupDto, id });
   }
 
   @ApiOperation({ summary: 'Get group by id' })

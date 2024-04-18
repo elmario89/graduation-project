@@ -39,20 +39,6 @@ export class GroupsService {
 
   async getAllGroups() {
     return await this.groupRepository.findAll({
-      include: [
-        {
-          model: Student,
-          attributes: {
-            exclude: ['password', 'groupId'],
-          },
-        },
-        {
-          model: Schedule,
-          attributes: {
-            exclude: ['groupId'],
-          },
-        },
-      ],
       order: [['updatedAt', 'DESC']],
     });
   }

@@ -6,6 +6,8 @@ interface UserCreationAttrs {
   login: string;
   password: string;
   role: UserRole;
+  name: string;
+  surname: string;
 }
 
 @Table({ tableName: 'users' })
@@ -21,6 +23,14 @@ export class User extends Model<User, UserCreationAttrs> {
     unique: true,
   })
   id: string;
+
+  @ApiProperty({ example: 'mister', description: 'Teacher name' })
+  @Column({ type: DataType.STRING, allowNull: false })
+  name: string;
+
+  @ApiProperty({ example: 'mister', description: 'Teacher surname' })
+  @Column({ type: DataType.STRING, allowNull: false })
+  surname: string;
 
   @ApiProperty({ example: 'mister', description: 'User login' })
   @Column({ type: DataType.STRING, unique: true, allowNull: false })

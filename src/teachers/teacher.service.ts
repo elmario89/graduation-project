@@ -4,11 +4,14 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Teacher } from './teacher.model';
 import { CreateTeacherDto } from './dto/create-teacher-dto';
 import { Discipline } from '../disciplines/discipline.model';
+import { TeacherDisciplines } from './teacher-disciplines.model';
 
 @Injectable()
 export class TeacherService {
   constructor(
     @InjectModel(Teacher) private teacherRepository: typeof Teacher,
+    @InjectModel(TeacherDisciplines)
+    private teacherDisciplinesRepository: typeof TeacherDisciplines,
   ) {}
 
   async createTeacher(dto: CreateTeacherDto) {
@@ -17,10 +20,12 @@ export class TeacherService {
       ...dto,
       password: hashPassword,
     });
-    await teacher.$set(
-      'disciplines',
-      dto.disciplines?.length ? [...dto.disciplines] : [],
-    );
+    dto.disciplineIds.map(async (disciplineId) => {
+      await this.teacherDisciplinesRepository.create({
+        teacherId: teacher.id,
+        disciplineId: disciplineId,
+      });
+    });
 
     return teacher;
   }
@@ -45,7 +50,25 @@ export class TeacherService {
           attributes: [],
         },
       },
+      attributes: {
+        exclude: ['role', 'password'],
+      },
       order: [['updatedAt', 'DESC']],
+    });
+  }
+
+  async deleteTeacher(id: string) {
+    return await this.teacherRepository.destroy({ where: { id } });
+  }
+
+  async updateTeacher(dto: CreateTeacherDto & { id: string }) {
+    await this.teacherRepository.update({ ...dto }, { where: { id: dto.id } });
+
+    dto.disciplineIds.map(async (disciplineId) => {
+      await this.teacherDisciplinesRepository.create({
+        teacherId: dto.id,
+        disciplineId: disciplineId,
+      });
     });
   }
 }

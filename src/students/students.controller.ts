@@ -4,7 +4,8 @@ import {
   Delete,
   Get,
   Param,
-  Post, Put,
+  Post,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -15,7 +16,6 @@ import { Student } from './student.model';
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student-dto';
 import { GetStudentByGroupDto } from './dto/get-student-by-group-dto';
-import { Group } from '../groups/group.model';
 
 @ApiTags('Students')
 @Controller('students')
@@ -32,16 +32,16 @@ export class StudentsController {
   }
 
   @ApiOperation({ summary: 'Update student' })
-  @ApiResponse({ status: 200, type: Group })
+  @ApiResponse({ status: 200, type: Student })
   @Put('/:id')
   @UseGuards(JwtAuthGuard)
   @UseGuards(AdminGuard)
-  update(@Param('id') id: string, @Body() groupDto: CreateStudentDto) {
-    return this.studentsService.updateStudent({ ...groupDto, id });
+  update(@Param('id') id: string, @Body() studentDto: CreateStudentDto) {
+    return this.studentsService.updateStudent({ ...studentDto, id });
   }
 
   @ApiOperation({ summary: 'Delete student' })
-  @ApiResponse({ status: 200, type: Group })
+  @ApiResponse({ status: 200, type: Student })
   @Delete('/:id')
   @UseGuards(JwtAuthGuard)
   @UseGuards(AdminGuard)
@@ -58,7 +58,7 @@ export class StudentsController {
   }
 
   @ApiOperation({ summary: 'Get student by id' })
-  @ApiResponse({ status: 200, type: Group })
+  @ApiResponse({ status: 200, type: Student })
   @Get('/:id')
   @UseGuards(JwtAuthGuard)
   getStudentById(@Param('id') id: string) {
@@ -66,7 +66,7 @@ export class StudentsController {
   }
 
   @ApiOperation({ summary: 'Get all students' })
-  @ApiResponse({ status: 200, type: Group })
+  @ApiResponse({ status: 200, type: Student })
   @Get()
   @UseGuards(JwtAuthGuard)
   @UseGuards(AdminGuard)

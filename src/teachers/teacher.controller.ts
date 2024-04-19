@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AdminGuard } from '../auth/admin.guard';
@@ -36,5 +45,23 @@ export class TeacherController {
   @UseGuards(AdminGuard)
   getAllTeachers() {
     return this.teachersService.getAllTeachers();
+  }
+
+  @ApiOperation({ summary: 'Delete teacher' })
+  @ApiResponse({ status: 200, type: Teacher })
+  @Delete('/:id')
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
+  delete(@Param('id') id: string) {
+    return this.teachersService.deleteTeacher(id);
+  }
+
+  @ApiOperation({ summary: 'Update teacher' })
+  @ApiResponse({ status: 200, type: Teacher })
+  @Put('/:id')
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
+  update(@Param('id') id: string, @Body() teacherDto: CreateTeacherDto) {
+    return this.teachersService.updateTeacher({ ...teacherDto, id });
   }
 }

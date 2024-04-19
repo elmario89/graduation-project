@@ -35,4 +35,15 @@ export class DisciplinesService {
       order: [['updatedAt', 'DESC']],
     });
   }
+
+  async getDisciplineById(id: string) {
+    return await this.disciplineRepository.findOne({
+      where: { id },
+      include: [
+        {
+          model: Teacher,
+        },
+      ],
+    });
+  }
 }

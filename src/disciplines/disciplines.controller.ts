@@ -14,6 +14,7 @@ import { DisciplinesService } from './disciplines.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AdminGuard } from '../auth/admin.guard';
 import { Group } from '../groups/group.model';
+import { Faculty } from '../faculties/faculty.model';
 
 @ApiTags('Disciplines')
 @Controller('disciplines')
@@ -45,5 +46,13 @@ export class DisciplinesController {
   @UseGuards(AdminGuard)
   delete(@Param('id') id: string) {
     return this.disciplinesService.deleteDiscipline(id);
+  }
+
+  @ApiOperation({ summary: 'Get discipline by id' })
+  @ApiResponse({ status: 200, type: Faculty })
+  @Get('/:id')
+  @UseGuards(JwtAuthGuard)
+  getFacultyById(@Param('id') id: string) {
+    return this.disciplinesService.getDisciplineById(id);
   }
 }

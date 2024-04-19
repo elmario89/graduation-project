@@ -1,6 +1,7 @@
 import {
+  BelongsTo,
   Column,
-  DataType,
+  DataType, ForeignKey,
   HasMany,
   HasOne,
   Model,
@@ -9,6 +10,7 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 import { Student } from '../students/student.model';
 import { Schedule } from '../schedule/schedule.model';
+import { Faculty } from '../faculties/faculty.model';
 
 interface GroupCreationAttrs {
   name: string;
@@ -58,4 +60,15 @@ export class Group extends Model<Group, GroupCreationAttrs> {
   })
   @Column({ type: DataType.DATE, allowNull: false })
   finish: Date;
+
+  @BelongsTo(() => Faculty)
+  faculty: Faculty;
+
+  @ApiProperty({
+    example: 'b70f4034-5328-4c02-b652-d4a4414f3a29',
+    description: 'Faculty id',
+  })
+  @ForeignKey(() => Faculty)
+  @Column({ type: DataType.UUID, allowNull: false })
+  facultyId: string;
 }

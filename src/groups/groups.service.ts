@@ -4,6 +4,7 @@ import { Group } from './group.model';
 import { CreateGroupDto } from './dto/create-group-dto';
 import { Student } from '../students/student.model';
 import { Schedule } from '../schedule/schedule.model';
+import { Faculty } from '../faculties/faculty.model';
 
 @Injectable()
 export class GroupsService {
@@ -25,6 +26,9 @@ export class GroupsService {
       where: { id },
       include: [
         {
+          model: Faculty,
+        },
+        {
           model: Student,
           attributes: {
             exclude: ['password', 'groupId'],
@@ -42,6 +46,11 @@ export class GroupsService {
 
   async getAllGroups() {
     return await this.groupRepository.findAll({
+      include: [
+        {
+          model: Faculty,
+        },
+      ],
       order: [['updatedAt', 'DESC']],
     });
   }

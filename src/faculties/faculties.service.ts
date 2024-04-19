@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Faculty } from './faculty.model';
 import { CreateFacultyDto } from './dto/create-faculty-dto';
+import { Group } from '../groups/group.model';
 @Injectable()
 export class FacultiesService {
   constructor(
@@ -32,6 +33,11 @@ export class FacultiesService {
   async getFacultyById(id: string) {
     return await this.facultiesRepository.findOne({
       where: { id },
+      include: [
+        {
+          model: Group,
+        },
+      ],
     });
   }
 }

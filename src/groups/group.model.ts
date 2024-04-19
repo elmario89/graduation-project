@@ -61,7 +61,11 @@ export class Group extends Model<Group, GroupCreationAttrs> {
   @Column({ type: DataType.DATE, allowNull: false })
   finish: Date;
 
-  @BelongsTo(() => Faculty)
+  @BelongsTo(() => Faculty, {
+    onUpdate: 'CONSTRAIN',
+    hooks: true,
+    onDelete: 'CONSTRAIN',
+  })
   faculty: Faculty;
 
   @ApiProperty({

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -35,6 +36,15 @@ export class GroupsController {
   @UseGuards(AdminGuard)
   update(@Param('id') id: string, @Body() groupDto: CreateGroupDto) {
     return this.groupsService.updateGroup({ ...groupDto, id });
+  }
+
+  @ApiOperation({ summary: 'Delete group' })
+  @ApiResponse({ status: 200, type: Group })
+  @Delete('/:id')
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
+  delete(@Param('id') id: string) {
+    return this.groupsService.deleteGroup(id);
   }
 
   @ApiOperation({ summary: 'Get group by id' })

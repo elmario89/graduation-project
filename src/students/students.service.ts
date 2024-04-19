@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Student } from './student.model';
 import { CreateStudentDto } from './dto/create-student-dto';
 import { GroupsService } from '../groups/groups.service';
+import { Group } from '../groups/group.model';
 
 @Injectable()
 export class StudentsService {
@@ -20,6 +21,13 @@ export class StudentsService {
     });
   }
 
+  async updateStudent(dto: CreateStudentDto & { id: string }) {
+    return await this.studentRepository.update(
+      { ...dto },
+      { where: { id: dto.id } },
+    );
+  }
+
   async getStudentsByGroup(groupId: string) {
     const students = await this.studentRepository.findAll({
       where: { groupId },
@@ -32,5 +40,34 @@ export class StudentsService {
       group,
       students,
     };
+  }
+
+  async deleteStudent(id: string) {
+    return await this.studentRepository.destroy({ where: { id } });
+  }
+
+  async getStudentById(id: string) {
+    return await this.studentRepository.findOne({
+      where: { id },
+      attributes: { exclude: ['password'] },
+      include: [
+        {
+          model: Group,
+        },
+      ],
+    });
+  }
+
+  async getAllStudents() {
+    console.log('here');
+    return await this.studentRepository.findAll({
+      attributes: { exclude: ['password'] },
+      include: [
+        {
+          model: Group,
+        },
+      ],
+      order: [['updatedAt', 'DESC']],
+    });
   }
 }

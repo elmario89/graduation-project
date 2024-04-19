@@ -21,6 +21,10 @@ export class GroupsService {
     );
   }
 
+  async deleteGroup(id: string) {
+    return await this.groupRepository.destroy({ where: { id } });
+  }
+
   async getGroupById(id: string) {
     return await this.groupRepository.findOne({
       where: { id },

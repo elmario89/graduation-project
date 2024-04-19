@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -38,13 +39,22 @@ export class FacultiesController {
     return this.facultiesService.getAllFaculties();
   }
 
+  @ApiOperation({ summary: 'Delete faculty' })
+  @ApiResponse({ status: 200, type: Group })
+  @Delete('/:id')
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
+  delete(@Param('id') id: string) {
+    return this.facultiesService.deleteFaculty(id);
+  }
+
   @ApiOperation({ summary: 'Update faculty' })
   @ApiResponse({ status: 200, type: Group })
   @Put('/:id')
   @UseGuards(JwtAuthGuard)
   @UseGuards(AdminGuard)
   update(@Param('id') id: string, @Body() facultyDto: CreateFacultyDto) {
-    return this.facultiesService.updateGroup({ ...facultyDto, id });
+    return this.facultiesService.updateFaculty({ ...facultyDto, id });
   }
 
   @ApiOperation({ summary: 'Get faculty by id' })

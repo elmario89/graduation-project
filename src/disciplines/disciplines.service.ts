@@ -20,6 +20,10 @@ export class DisciplinesService {
     return discipline;
   }
 
+  async deleteDiscipline(id: string) {
+    return await this.disciplineRepository.destroy({ where: { id } });
+  }
+
   async getAllDisciplines() {
     return await this.disciplineRepository.findAll({
       include: {

@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post, Put,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AdminGuard } from '../auth/admin.guard';
@@ -6,6 +15,7 @@ import { Student } from './student.model';
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student-dto';
 import { GetStudentByGroupDto } from './dto/get-student-by-group-dto';
+import { Group } from '../groups/group.model';
 
 @ApiTags('Students')
 @Controller('students')
@@ -21,11 +31,46 @@ export class StudentsController {
     return this.studentsService.createStudent(studentDto);
   }
 
+  @ApiOperation({ summary: 'Update student' })
+  @ApiResponse({ status: 200, type: Group })
+  @Put('/:id')
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
+  update(@Param('id') id: string, @Body() groupDto: CreateStudentDto) {
+    return this.studentsService.updateStudent({ ...groupDto, id });
+  }
+
+  @ApiOperation({ summary: 'Delete student' })
+  @ApiResponse({ status: 200, type: Group })
+  @Delete('/:id')
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
+  delete(@Param('id') id: string) {
+    return this.studentsService.deleteStudent(id);
+  }
+
   @ApiOperation({ summary: 'Get students by id' })
   @ApiResponse({ status: 200, type: [Student] })
-  @Get()
+  @Get('/by-group')
   @UseGuards(JwtAuthGuard)
   getStudentsById(@Query() studentDto: GetStudentByGroupDto) {
     return this.studentsService.getStudentsByGroup(studentDto.groupId);
+  }
+
+  @ApiOperation({ summary: 'Get student by id' })
+  @ApiResponse({ status: 200, type: Group })
+  @Get('/:id')
+  @UseGuards(JwtAuthGuard)
+  getStudentById(@Param('id') id: string) {
+    return this.studentsService.getStudentById(id);
+  }
+
+  @ApiOperation({ summary: 'Get all students' })
+  @ApiResponse({ status: 200, type: Group })
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
+  getAllStudents() {
+    return this.studentsService.getAllStudents();
   }
 }

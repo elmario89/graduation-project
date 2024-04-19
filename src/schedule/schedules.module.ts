@@ -14,13 +14,7 @@ import { Student } from '../students/student.model';
   controllers: [SchedulesController],
   providers: [SchedulesService],
   imports: [
-    SequelizeModule.forFeature([
-      Schedule,
-      Group,
-      Discipline,
-      Teacher,
-      Student,
-    ]),
+    SequelizeModule.forFeature([Schedule, Group, Discipline, Teacher, Student]),
     forwardRef(() => AuthModule),
     forwardRef(() => GroupsModule),
   ],

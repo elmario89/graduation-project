@@ -12,11 +12,15 @@ export class FacultiesService {
     return await this.facultiesRepository.create(dto);
   }
 
-  async updateGroup(dto: CreateFacultyDto & { id: string }) {
+  async updateFaculty(dto: CreateFacultyDto & { id: string }) {
     return await this.facultiesRepository.update(
       { ...dto },
       { where: { id: dto.id } },
     );
+  }
+
+  async deleteFaculty(id: string) {
+    return await this.facultiesRepository.destroy({ where: { id } });
   }
 
   async getAllFaculties() {

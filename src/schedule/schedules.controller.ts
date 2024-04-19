@@ -6,7 +6,6 @@ import { AdminGuard } from '../auth/admin.guard';
 import { CreateScheduleDto } from './dto/create-schedule-dto';
 import { SchedulesService } from './schedules.service';
 import { Group } from '../groups/group.model';
-import { CreateVisitDto } from './dto/create-visit-dto';
 
 @ApiTags('Schedules')
 @Controller('schedules')

@@ -1,10 +1,19 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Discipline } from './discipline.model';
 import { CreateDisciplineDto } from './dto/create-discipline-dto';
 import { DisciplinesService } from './disciplines.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AdminGuard } from '../auth/admin.guard';
+import { Group } from '../groups/group.model';
 
 @ApiTags('Disciplines')
 @Controller('disciplines')
@@ -27,5 +36,14 @@ export class DisciplinesController {
   @UseGuards(AdminGuard)
   getAllDisciplines() {
     return this.disciplinesService.getAllDisciplines();
+  }
+
+  @ApiOperation({ summary: 'Delete discipline' })
+  @ApiResponse({ status: 200, type: Group })
+  @Delete('/:id')
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
+  delete(@Param('id') id: string) {
+    return this.disciplinesService.deleteDiscipline(id);
   }
 }

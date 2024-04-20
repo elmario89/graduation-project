@@ -27,6 +27,11 @@ export class FacultiesService {
   async getAllFaculties() {
     return await this.facultiesRepository.findAll({
       order: [['updatedAt', 'DESC']],
+      include: [
+        {
+          model: Group,
+        },
+      ],
     });
   }
 

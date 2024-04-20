@@ -62,13 +62,29 @@ export class TeacherService {
   }
 
   async updateTeacher(dto: CreateTeacherDto & { id: string }) {
-    await this.teacherRepository.update({ ...dto }, { where: { id: dto.id } });
+    await this.teacherRepository.update(
+      { name: dto.name, surname: dto.surname },
+      { where: { id: dto.id } },
+    );
 
-    dto.disciplineIds.map(async (disciplineId) => {
-      await this.teacherDisciplinesRepository.create({
-        teacherId: dto.id,
-        disciplineId: disciplineId,
-      });
+    await this.teacherDisciplinesRepository.destroy({
+      where: { teacherId: dto.id },
+    });
+
+    await Promise.all(
+      dto.disciplineIds.map(async (disciplineId) => {
+        await this.teacherDisciplinesRepository.create({
+          teacherId: dto.id,
+          disciplineId: disciplineId,
+        });
+      }),
+    );
+
+    return await this.teacherRepository.findOne({
+      where: { id: dto.id },
+      include: {
+        model: Discipline,
+      },
     });
   }
 }

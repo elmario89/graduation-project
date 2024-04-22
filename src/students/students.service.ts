@@ -59,7 +59,6 @@ export class StudentsService {
   }
 
   async getAllStudents() {
-    console.log('here');
     return await this.studentRepository.findAll({
       attributes: { exclude: ['password', 'role'] },
       include: [

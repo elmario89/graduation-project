@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { DayOfWeek } from '../../enums/day-of-week.enum';
+import { Day } from '../../enums/day.enum';
 
 export class CreateScheduleDto {
   @ApiProperty({
@@ -24,8 +24,5 @@ export class CreateScheduleDto {
     example: '23:11:08',
     description: 'Time',
   })
-  readonly time: Date;
-
-  @ApiProperty({ example: DayOfWeek.Monday, description: 'Day of the week' })
-  readonly dayOfWeek: DayOfWeek;
+  readonly time: string;
 }

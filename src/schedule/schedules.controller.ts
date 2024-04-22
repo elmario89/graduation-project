@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Schedule } from './schedule.model';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -6,6 +14,7 @@ import { AdminGuard } from '../auth/admin.guard';
 import { CreateScheduleDto } from './dto/create-schedule-dto';
 import { SchedulesService } from './schedules.service';
 import { Group } from '../groups/group.model';
+import { dayMapper } from './day.mapper';
 
 @ApiTags('Schedules')
 @Controller('schedules')
@@ -17,8 +26,20 @@ export class SchedulesController {
   @Post()
   @UseGuards(JwtAuthGuard)
   @UseGuards(AdminGuard)
-  addSchedule(@Body() groupDto: CreateScheduleDto) {
-    return this.schedulesService.addSchedule(groupDto);
+  addSchedule(@Body() scheduleDto: CreateScheduleDto) {
+    return this.schedulesService.addSchedule(scheduleDto);
+  }
+
+  @ApiOperation({ summary: 'Add schedule' })
+  @ApiResponse({ status: 200, type: Schedule })
+  @Put('/:id')
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
+  updateSchedules(
+    @Param('id') id: string,
+    @Body() scheduleDto: CreateScheduleDto,
+  ) {
+    return this.schedulesService.updateSchedule({ ...scheduleDto, id });
   }
 
   @ApiOperation({ summary: 'Get all schedules' })
@@ -46,5 +67,14 @@ export class SchedulesController {
   @UseGuards(AdminGuard)
   getScheduleByTeacherId(@Param('id') id: string) {
     return this.schedulesService.getScheduleByTeacherId(id);
+  }
+
+  @ApiOperation({ summary: 'Get schedules by group id' })
+  @ApiResponse({ status: 200, type: Group })
+  @Get('/schedule/:id')
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
+  getScheduleById(@Param('id') id: string) {
+    return this.schedulesService.getScheduleById(id);
   }
 }

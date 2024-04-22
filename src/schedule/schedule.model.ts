@@ -10,14 +10,15 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Group } from '../groups/group.model';
 import { Teacher } from '../teachers/teacher.model';
 import { Discipline } from '../disciplines/discipline.model';
-import { DayOfWeek } from '../enums/day-of-week.enum';
+import { Day } from '../enums/day.enum';
+import { ScheduleType } from '../enums/schedule-type.enum';
 
 interface ScheduleCreationAttrs {
   date: Date;
   teacherId: string;
   disciplineId: string;
   groupId: string;
-  day: DayOfWeek;
+  day: Day;
 }
 
 @Table({ tableName: 'schedules' })
@@ -38,15 +39,22 @@ export class Schedule extends Model<Schedule, ScheduleCreationAttrs> {
     example: '23:11:08',
     description: 'Education finish date',
   })
-  @Column({ type: DataType.TIME, allowNull: false })
-  time: Date;
+  @Column({ type: DataType.STRING, allowNull: false })
+  time: string;
 
-  @ApiProperty({ example: DayOfWeek.Monday, description: 'Day of the week' })
+  @ApiProperty({ example: Day.Monday, description: 'Day of the week' })
   @Column({
-    type: DataType.ENUM(...Object.values(DayOfWeek)),
+    type: DataType.STRING,
     allowNull: false,
   })
-  dayOfWeek: DayOfWeek;
+  day: string;
+
+  @ApiProperty({ example: ScheduleType.Lecture, description: 'Type of class' })
+  @Column({
+    type: DataType.ENUM(...Object.values(ScheduleType)),
+    allowNull: false,
+  })
+  scheduleType: ScheduleType;
 
   @BelongsTo(() => Teacher)
   teacher: Teacher;

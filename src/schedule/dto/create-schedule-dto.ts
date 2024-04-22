@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Day } from '../../enums/day.enum';
 
 export class CreateScheduleDto {
   @ApiProperty({

@@ -14,7 +14,6 @@ import { AdminGuard } from '../auth/admin.guard';
 import { CreateScheduleDto } from './dto/create-schedule-dto';
 import { SchedulesService } from './schedules.service';
 import { Group } from '../groups/group.model';
-import { dayMapper } from './day.mapper';
 
 @ApiTags('Schedules')
 @Controller('schedules')

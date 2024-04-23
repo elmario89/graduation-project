@@ -1,6 +1,6 @@
 import {
   Body,
-  Controller,
+  Controller, Delete,
   Get,
   Param,
   Post,
@@ -39,6 +39,15 @@ export class SchedulesController {
     @Body() scheduleDto: CreateScheduleDto,
   ) {
     return this.schedulesService.updateSchedule({ ...scheduleDto, id });
+  }
+
+  @ApiOperation({ summary: 'Delete schedule' })
+  @ApiResponse({ status: 200, type: Schedule })
+  @Delete('/:id')
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
+  delete(@Param('id') id: string) {
+    return this.schedulesService.deleteSchedule(id);
   }
 
   @ApiOperation({ summary: 'Get all schedules' })

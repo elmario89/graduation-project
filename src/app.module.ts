@@ -19,6 +19,8 @@ import { VisitsModule } from './visits/visits.module';
 import { Visit } from './visits/visit.model';
 import { FacultiesModule } from './faculties/faculties.module';
 import { Faculty } from './faculties/faculty.model';
+import { LocationsModule } from './locations/locations.module';
+import { Location } from './locations/location.model';
 
 @Module({
   imports: [
@@ -42,6 +44,7 @@ import { Faculty } from './faculties/faculty.model';
         Schedule,
         Visit,
         Faculty,
+        Location,
       ],
       autoLoadModels: true,
     }),
@@ -54,6 +57,7 @@ import { Faculty } from './faculties/faculty.model';
     SchedulesModule,
     VisitsModule,
     FacultiesModule,
+    LocationsModule,
   ],
 })
 export class AppModule {}

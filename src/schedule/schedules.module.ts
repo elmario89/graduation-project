@@ -9,12 +9,20 @@ import { GroupsModule } from '../groups/groups.module';
 import { Discipline } from '../disciplines/discipline.model';
 import { Teacher } from '../teachers/teacher.model';
 import { Student } from '../students/student.model';
+import { Location } from '../locations/location.model';
 
 @Module({
   controllers: [SchedulesController],
   providers: [SchedulesService],
   imports: [
-    SequelizeModule.forFeature([Schedule, Group, Discipline, Teacher, Student]),
+    SequelizeModule.forFeature([
+      Schedule,
+      Group,
+      Discipline,
+      Teacher,
+      Student,
+      Location,
+    ]),
     forwardRef(() => AuthModule),
     forwardRef(() => GroupsModule),
   ],

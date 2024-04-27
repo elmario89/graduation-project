@@ -12,6 +12,7 @@ import { Teacher } from '../teachers/teacher.model';
 import { Discipline } from '../disciplines/discipline.model';
 import { Day } from '../enums/day.enum';
 import { ScheduleType } from '../enums/schedule-type.enum';
+import { Location } from '../locations/location.model';
 
 interface ScheduleCreationAttrs {
   date: Date;
@@ -88,4 +89,15 @@ export class Schedule extends Model<Schedule, ScheduleCreationAttrs> {
   @ForeignKey(() => Group)
   @Column({ type: DataType.UUID, allowNull: false })
   groupId: string;
+
+  @BelongsTo(() => Location)
+  location: Location;
+
+  @ApiProperty({
+    example: 'b70f4034-5328-4c02-b652-d4a4414f3a29',
+    description: 'Location id',
+  })
+  @ForeignKey(() => Location)
+  @Column({ type: DataType.UUID, allowNull: false })
+  locationId: string;
 }

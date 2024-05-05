@@ -22,8 +22,6 @@ import { Faculty } from './faculties/faculty.model';
 import { LocationsModule } from './locations/locations.module';
 import { Location } from './locations/location.model';
 
-console.log(process.env.POSTGRES_PASSWORD);
-
 @Module({
   imports: [
     ConfigModule.forRoot({

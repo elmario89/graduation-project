@@ -12,7 +12,9 @@ export class LocationsService {
   async createLocation(dto: CreateLocationDto) {
     const polygon = {
       type: 'Polygon',
-      coordinates: [[...dto.coordinates]],
+      coordinates: [
+        [...dto.coordinates.map((c) => [Number(c.lng), Number(c.lat)])],
+      ],
     };
     return await this.locationRepository.create({
       ...dto,
@@ -27,12 +29,27 @@ export class LocationsService {
   async getAllLocations() {
     return await this.locationRepository.findAll({
       order: [['updatedAt', 'DESC']],
+      attributes: { exclude: ['coordinates'] },
     });
   }
 
   async getLocationById(id: string) {
-    return await this.locationRepository.findOne({
+    const result = await this.locationRepository.findOne({
       where: { id },
     });
+
+    const { buildingNumber, floor, auditory, coordinates, address } = result;
+
+    return {
+      id,
+      buildingNumber,
+      floor,
+      address,
+      auditory,
+      coordinates: coordinates.coordinates[0].map((c) => ({
+        lng: c[0],
+        lat: c[1],
+      })),
+    };
   }
 }

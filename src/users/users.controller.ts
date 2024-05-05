@@ -14,8 +14,8 @@ export class UsersController {
   @ApiOperation({ summary: 'Create user' })
   @ApiResponse({ status: 200, type: User })
   @Post()
-  @UseGuards(JwtAuthGuard)
-  @UseGuards(AdminGuard)
+  // @UseGuards(JwtAuthGuard)
+  // @UseGuards(AdminGuard)
   create(@Body() userDto: CreateUserDto) {
     return this.usersService.createUser(userDto);
   }

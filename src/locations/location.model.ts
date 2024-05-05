@@ -2,12 +2,12 @@ import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
 import { Schedule } from '../schedule/schedule.model';
 
-interface LocationCreationAttrs {
+export interface LocationCreationAttrs {
   buildingNumber: number;
   auditory: number;
   floor: number;
   address: string;
-  coordinates: { type: string; coordinates: number[][] };
+  coordinates: { type: string; coordinates: number[][][] };
 }
 
 @Table({ tableName: 'locations' })
@@ -60,7 +60,7 @@ export class Location extends Model<Location, LocationCreationAttrs> {
     type: DataType.GEOMETRY('POLYGON'),
     allowNull: false,
   })
-  coordinates: any[];
+  coordinates: { coordinates: { coordinates: number[][] } };
 
   @HasMany(() => Schedule)
   schedules: Schedule[];

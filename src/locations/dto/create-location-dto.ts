@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Coordinate } from 'src/types/coordinate';
 
 export class CreateLocationDto {
   @ApiProperty({
@@ -29,5 +30,5 @@ export class CreateLocationDto {
     example: 'Дискретная математика',
     description: 'Discipline name',
   })
-  readonly coordinates: number[];
+  readonly coordinates: Coordinate[];
 }

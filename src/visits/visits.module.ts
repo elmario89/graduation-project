@@ -6,6 +6,7 @@ import { VisitsService } from './visit.service';
 import { Visit } from './visit.model';
 import { Student } from '../students/student.model';
 import { Schedule } from '../schedule/schedule.model';
+import { SchedulesModule } from 'src/schedule/schedules.module';
 
 @Module({
   controllers: [VisitsController],
@@ -13,6 +14,7 @@ import { Schedule } from '../schedule/schedule.model';
   imports: [
     SequelizeModule.forFeature([Visit, Schedule, Student]),
     forwardRef(() => AuthModule),
+    forwardRef(() => SchedulesModule),
   ],
 })
 export class VisitsModule {}

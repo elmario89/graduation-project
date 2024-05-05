@@ -11,7 +11,7 @@ import { CreateVisitDto } from './dto/create-visit-dto';
 export class VisitsController {
   constructor(private readonly visitsService: VisitsService) {}
 
-  @ApiOperation({ summary: 'Get visits by teacher id' })
+  @ApiOperation({ summary: 'Create visit' })
   @ApiResponse({ status: 200, type: Group })
   @Post('')
   @UseGuards(JwtAuthGuard)

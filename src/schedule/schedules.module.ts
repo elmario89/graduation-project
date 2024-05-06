@@ -26,6 +26,5 @@ import { Location } from '../locations/location.model';
     forwardRef(() => AuthModule),
     forwardRef(() => GroupsModule),
   ],
-  exports: [SchedulesService],
 })
 export class SchedulesModule {}

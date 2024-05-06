@@ -6,15 +6,18 @@ import { VisitsService } from './visit.service';
 import { Visit } from './visit.model';
 import { Student } from '../students/student.model';
 import { Schedule } from '../schedule/schedule.model';
+import { Location } from '../locations/location.model';
 import { SchedulesModule } from 'src/schedule/schedules.module';
+import { LocationsModule } from 'src/locations/locations.module';
 
 @Module({
   controllers: [VisitsController],
   providers: [VisitsService],
   imports: [
-    SequelizeModule.forFeature([Visit, Schedule, Student]),
+    SequelizeModule.forFeature([Visit, Schedule, Student, Location]),
     forwardRef(() => AuthModule),
     forwardRef(() => SchedulesModule),
+    forwardRef(() => LocationsModule),
   ],
 })
 export class VisitsModule {}

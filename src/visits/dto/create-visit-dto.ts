@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Coordinate } from 'src/types/coordinate';
 
 export class CreateVisitDto {
   @ApiProperty({
@@ -18,4 +19,10 @@ export class CreateVisitDto {
     description: 'Date',
   })
   readonly date: Date;
+
+  @ApiProperty({
+    example: '{ lng: 55.797258, lat: 49.134325 }',
+    description: 'Coordinates',
+  })
+  readonly coordinates: Coordinate;
 }

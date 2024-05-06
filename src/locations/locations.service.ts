@@ -29,11 +29,13 @@ export class LocationsService {
         [...dto.coordinates.map((c) => [Number(c.lng), Number(c.lat)])],
       ],
     };
-    return await this.locationRepository.update(
+    await this.locationRepository.update(
       // @ts-ignore
       {...dto, coordinates: polygon },
       { where: { id: dto.id } },
     );
+
+    return this.getLocationById(dto.id);
   }
 
   async deleteLocation(id: string) {

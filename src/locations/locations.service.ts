@@ -5,6 +5,7 @@ import { CreateLocationDto } from './dto/create-location-dto';
 import { GetLocationsDto } from './dto/get-locations-dto';
 import { Schedule } from 'src/schedule/schedule.model';
 import { Op } from 'sequelize';
+import * as hull from 'geo-convex-hull';
 
 @Injectable()
 export class LocationsService {
@@ -14,10 +15,13 @@ export class LocationsService {
   ) { }
 
   async createLocation(dto: CreateLocationDto) {
+    const mapped = dto.coordinates.map(c => ({ longitude: Number(c.lng), latitude: Number(c.lat) }));
+    const hulled = hull(mapped).map(t => ({ lng: t.longitude, lat: t.latitude }));
+
     const polygon = {
       type: 'Polygon',
       coordinates: [
-        [...dto.coordinates.map((c) => [Number(c.lng), Number(c.lat)])],
+        [...hulled.map((c) => [Number(c.lng), Number(c.lat)])],
       ],
     };
     return await this.locationRepository.create({
@@ -27,15 +31,19 @@ export class LocationsService {
   }
 
   async updateLocation(dto: CreateLocationDto & { id: string }) {
+    const mapped = dto.coordinates.map(c => ({ longitude: Number(c.lng), latitude: Number(c.lat) }));
+    const hulled = hull(mapped).map(t => ({ lng: t.longitude, lat: t.latitude }))
+
     const polygon = {
       type: 'Polygon',
       coordinates: [
-        [...dto.coordinates.map((c) => [Number(c.lng), Number(c.lat)])],
+        [...hulled.map((c) => [Number(c.lng), Number(c.lat)])],
       ],
     };
+
     await this.locationRepository.update(
       // @ts-ignore
-      { ...dto, coordinates: polygon },
+      { ...dto, coordinates: polygon, },
       { where: { id: dto.id } },
     );
 
@@ -66,7 +74,7 @@ export class LocationsService {
       order: [['updatedAt', 'DESC']],
       attributes: { exclude: ['coordinates'] },
       where: {
-        id: {[Op.notIn]: schedules.map(s => s.locationId)}
+        id: { [Op.notIn]: schedules.map(s => s.locationId) }
       },
     });
   }

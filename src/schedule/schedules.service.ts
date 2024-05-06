@@ -19,7 +19,7 @@ export class SchedulesService {
       { where: { id: dto.id } },
     );
   }
-  
+
   async deleteSchedule(id: string) {
     return await this.scheduleRepository.destroy({ where: { id } });
   }

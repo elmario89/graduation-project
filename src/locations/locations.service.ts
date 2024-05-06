@@ -2,12 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Location } from './location.model';
 import { CreateLocationDto } from './dto/create-location-dto';
+import { GetLocationsDto } from './dto/get-locations-dto';
+import { Schedule } from 'src/schedule/schedule.model';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class LocationsService {
   constructor(
     @InjectModel(Location) private locationRepository: typeof Location,
-  ) {}
+    @InjectModel(Schedule) private scheduleRepository: typeof Schedule,
+  ) { }
 
   async createLocation(dto: CreateLocationDto) {
     const polygon = {
@@ -31,7 +35,7 @@ export class LocationsService {
     };
     await this.locationRepository.update(
       // @ts-ignore
-      {...dto, coordinates: polygon },
+      { ...dto, coordinates: polygon },
       { where: { id: dto.id } },
     );
 
@@ -46,6 +50,24 @@ export class LocationsService {
     return await this.locationRepository.findAll({
       order: [['updatedAt', 'DESC']],
       attributes: { exclude: ['coordinates'] },
+    });
+  }
+
+  async getLocationByTimeAndDay(dto: GetLocationsDto) {
+    const { day, time } = dto;
+    const schedules = await this.scheduleRepository.findAll({
+      where: {
+        time,
+        day,
+      },
+    });
+
+    return await this.locationRepository.findAll({
+      order: [['updatedAt', 'DESC']],
+      attributes: { exclude: ['coordinates'] },
+      where: {
+        id: {[Op.notIn]: schedules.map(s => s.locationId)}
+      },
     });
   }
 

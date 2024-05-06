@@ -16,6 +16,8 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AdminGuard } from '../auth/admin.guard';
 import { Group } from '../groups/group.model';
 import { Faculty } from '../faculties/faculty.model';
+import { GetLocationsDto } from './dto/get-locations-dto';
+import { Day } from 'src/enums/day.enum';
 
 @ApiTags('Locations')
 @Controller('locations')
@@ -50,6 +52,15 @@ export class LocationsController {
   @UseGuards(AdminGuard)
   getAllLocations() {
     return this.locationsService.getAllLocations();
+  }
+
+  @ApiOperation({ summary: 'Get locations by day' })
+  @ApiResponse({ status: 200, type: Location })
+  @Get('/:day/:time')
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
+  getLocationsByTimeAndDay(@Param('day') day: Day, @Param('time') time: number) {
+    return this.locationsService.getLocationByTimeAndDay({ day, time });
   }
 
   @ApiOperation({ summary: 'Delete location' })

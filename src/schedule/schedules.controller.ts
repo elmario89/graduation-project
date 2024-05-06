@@ -30,7 +30,7 @@ export class SchedulesController {
     return this.schedulesService.addSchedule(scheduleDto);
   }
 
-  @ApiOperation({ summary: 'Add schedule' })
+  @ApiOperation({ summary: 'Update schedule' })
   @ApiResponse({ status: 200, type: Schedule })
   @Put('/:id')
   @UseGuards(JwtAuthGuard)

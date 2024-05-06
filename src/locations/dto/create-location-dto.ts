@@ -28,7 +28,7 @@ export class CreateLocationDto {
 
   @ApiProperty({
     example: 'Дискретная математика',
-    description: 'Discipline name',
+    description: 'Coordinates',
   })
   readonly coordinates: Coordinate[];
 }

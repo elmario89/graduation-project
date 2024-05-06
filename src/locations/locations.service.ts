@@ -22,6 +22,20 @@ export class LocationsService {
     });
   }
 
+  async updateLocation(dto: CreateLocationDto & { id: string }) {
+    const polygon = {
+      type: 'Polygon',
+      coordinates: [
+        [...dto.coordinates.map((c) => [Number(c.lng), Number(c.lat)])],
+      ],
+    };
+    return await this.locationRepository.update(
+      // @ts-ignore
+      {...dto, coordinates: polygon },
+      { where: { id: dto.id } },
+    );
+  }
+
   async deleteLocation(id: string) {
     return await this.locationRepository.destroy({ where: { id } });
   }

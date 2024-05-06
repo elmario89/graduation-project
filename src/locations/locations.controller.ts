@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -28,6 +29,18 @@ export class LocationsController {
   @UseGuards(AdminGuard)
   create(@Body() locationDto: CreateLocationDto) {
     return this.locationsService.createLocation(locationDto);
+  }
+
+  @ApiOperation({ summary: 'Update location' })
+  @ApiResponse({ status: 200, type: Location })
+  @Put('/:id')
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminGuard)
+  update(
+    @Param('id') id: string,
+    @Body() locationDto: CreateLocationDto,
+  ) {
+    return this.locationsService.updateLocation({ ...locationDto, id });
   }
 
   @ApiOperation({ summary: 'Get all locations' })

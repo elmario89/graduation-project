@@ -11,13 +11,19 @@ export class StudentsService {
   constructor(
     @InjectModel(Student) private studentRepository: typeof Student,
     private readonly groupsService: GroupsService,
-  ) {}
+  ) { }
 
   async createStudent(dto: CreateStudentDto) {
     const hashPassword = await hash(dto.password, 10);
     return await this.studentRepository.create({
       ...dto,
       password: hashPassword,
+    });
+  }
+
+  async getStudentByLogin(login: string) {
+    return await this.studentRepository.findOne({
+      where: { login },
     });
   }
 

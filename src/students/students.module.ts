@@ -15,5 +15,6 @@ import { GroupsModule } from '../groups/groups.module';
     forwardRef(() => AuthModule),
     forwardRef(() => GroupsModule),
   ],
+  exports: [StudentsService],
 })
 export class StudentsModule {}

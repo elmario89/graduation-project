@@ -30,6 +30,12 @@ export class TeacherService {
     return teacher;
   }
 
+  async getTeacherByLogin(login: string) {
+    return await this.teacherRepository.findOne({
+      where: { login },
+    });
+  }
+
   async getTeacherById(id: string) {
     return await this.teacherRepository.findOne({
       where: { id },

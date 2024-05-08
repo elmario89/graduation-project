@@ -4,29 +4,60 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../users/user.model';
 import { compare } from 'bcryptjs';
+import { UserRole } from 'src/enums/user-role.enum';
+import { StudentsService } from 'src/students/students.service';
+import { TeacherService } from 'src/teachers/teacher.service';
+import { Student } from 'src/students/student.model';
+import { Teacher } from 'src/teachers/teacher.model';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
+    private readonly studentsService: StudentsService,
+    private readonly teachersService: TeacherService,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   async login(userDto: UserDto) {
     const user = await this.validateUser(userDto);
     return await this.generateToken(user);
   }
 
-  private async generateToken(user: User) {
+  private async generateToken(user: User | Student | Teacher) {
     const payload = { login: user.login, id: user.id, role: user.role };
+
+    if (user.role === UserRole.Student) {
+      
+      const group = await this.studentsService.getStudentById(user.id);
+
+      return this.jwtService.sign({ ...payload, groupId: group.id });
+    }
 
     return this.jwtService.sign(payload);
   }
 
-  private async validateUser(userDto: UserDto) {
-    const user = await this.usersService.getUsersByLogin(userDto.login);
-    const passwordEquals = await compare(userDto.password, user.password);
+  private async getUserByRole(userDto: UserDto) {
+    let user;
 
+    switch (userDto.role) {
+      case UserRole.Student: {
+        return user = await this.studentsService.getStudentByLogin(userDto.login);
+      };
+      case UserRole.Teacher: {
+        console.log('teacher');
+        return user = await this.teachersService.getTeacherByLogin(userDto.login);
+      };
+      case UserRole.Admin: {
+        return user = await this.usersService.getUsersByLogin(userDto.login)
+      };
+    }
+  }
+
+  private async validateUser(userDto: UserDto) {
+    const user = await this.getUserByRole(userDto);
+
+    const passwordEquals = await compare(userDto.password, user.password);
     if (user && passwordEquals) {
       return user;
     }

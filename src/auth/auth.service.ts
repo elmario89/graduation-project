@@ -28,10 +28,10 @@ export class AuthService {
     const payload = { login: user.login, id: user.id, role: user.role };
 
     if (user.role === UserRole.Student) {
-      
-      const group = await this.studentsService.getStudentById(user.id);
+      const student = await this.studentsService.getStudentById(user.id);
+      const { groupId } = student;
 
-      return this.jwtService.sign({ ...payload, groupId: group.id });
+      return this.jwtService.sign({ ...payload, groupId });
     }
 
     return this.jwtService.sign(payload);

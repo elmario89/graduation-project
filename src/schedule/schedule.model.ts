@@ -37,11 +37,18 @@ export class Schedule extends Model<Schedule, ScheduleCreationAttrs> {
   id: string;
 
   @ApiProperty({
-    example: '23:11:08',
-    description: 'Education finish date',
+    example: '9:40',
+    description: 'Education time start',
   })
-  @Column({ type: DataType.STRING, allowNull: false })
-  time: string;
+  @Column({ type: DataType.TIME, allowNull: false })
+  timeStart: string;
+
+  @ApiProperty({
+    example: '9:40',
+    description: 'Education time Finish',
+  })
+  @Column({ type: DataType.TIME, allowNull: false })
+  timeFinish: string;
 
   @ApiProperty({ example: Day.Monday, description: 'Day of the week' })
   @Column({

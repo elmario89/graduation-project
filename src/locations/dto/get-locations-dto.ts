@@ -9,8 +9,8 @@ export class GetLocationsDto {
   readonly day: Day;
 
   @ApiProperty({
-    example: 900,
+    example: '9:40',
     description: 'Time',
   })
-  readonly time: number;
+  readonly time: string;
 }

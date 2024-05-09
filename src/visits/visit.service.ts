@@ -5,6 +5,7 @@ import { Visit } from './visit.model';
 import { Schedule } from 'src/schedule/schedule.model';
 import { Location } from 'src/locations/location.model';
 import * as pointInPolygon from 'point-in-polygon';
+import { GetVisitByScheduleAndStudent } from './dto/get-visit-by-schedule-and-student-dto';
 
 @Injectable()
 export class VisitsService {
@@ -35,5 +36,15 @@ export class VisitsService {
     }
 
     return await this.visitRepository.create(dto);
+  }
+
+  async getVisitByScheduleAndStudent(dto: GetVisitByScheduleAndStudent) {
+    const { scheduleId, studentId } = dto;
+    return await this.visitRepository.findAll({
+      where: {
+        scheduleId,
+        studentId,
+      },
+    })
   }
 }

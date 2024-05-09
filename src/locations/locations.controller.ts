@@ -57,7 +57,7 @@ export class LocationsController {
   @UseGuards(AdminGuard)
   getLocationsByTimeAndDay(
     @Param('day') day: Day,
-    @Param('time') time: number,
+    @Param('time') time: string,
   ) {
     return this.locationsService.getLocationByTimeAndDay({ day, time });
   }

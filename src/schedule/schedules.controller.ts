@@ -14,7 +14,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AdminGuard } from '../auth/admin.guard';
 import { CreateScheduleDto } from './dto/create-schedule-dto';
 import { SchedulesService } from './schedules.service';
-import { Group } from '../groups/group.model';
+import { Day } from 'src/enums/day.enum';
 
 @ApiTags('Schedules')
 @Controller('schedules')
@@ -52,7 +52,7 @@ export class SchedulesController {
   }
 
   @ApiOperation({ summary: 'Get all schedules' })
-  @ApiResponse({ status: 200, type: Group })
+  @ApiResponse({ status: 200, type: Schedule })
   @Get()
   @UseGuards(JwtAuthGuard)
   @UseGuards(AdminGuard)
@@ -61,16 +61,15 @@ export class SchedulesController {
   }
 
   @ApiOperation({ summary: 'Get schedules by group id' })
-  @ApiResponse({ status: 200, type: Group })
+  @ApiResponse({ status: 200, type: Schedule })
   @Get('/group/:id')
   @UseGuards(JwtAuthGuard)
-  @UseGuards(AdminGuard)
   getScheduleByGroupId(@Param('id') id: string) {
     return this.schedulesService.getScheduleByGroupId(id);
   }
 
   @ApiOperation({ summary: 'Get schedules by teacher id' })
-  @ApiResponse({ status: 200, type: Group })
+  @ApiResponse({ status: 200, type: Schedule })
   @Get('/teacher/:id')
   @UseGuards(JwtAuthGuard)
   @UseGuards(AdminGuard)
@@ -78,12 +77,19 @@ export class SchedulesController {
     return this.schedulesService.getScheduleByTeacherId(id);
   }
 
-  @ApiOperation({ summary: 'Get schedules by group id' })
-  @ApiResponse({ status: 200, type: Group })
+  @ApiOperation({ summary: 'Get schedules by id' })
+  @ApiResponse({ status: 200, type: Schedule })
   @Get('/schedule/:id')
   @UseGuards(JwtAuthGuard)
-  @UseGuards(AdminGuard)
   getScheduleById(@Param('id') id: string) {
     return this.schedulesService.getScheduleById(id);
+  }
+
+  @ApiOperation({ summary: 'Get schedule slot' })
+  @ApiResponse({ status: 200, type: Schedule })
+  @Get('/discipline/:groupId/:disciplineId')
+  @UseGuards(JwtAuthGuard)
+  getScheduleByGroupAndDiscipline(@Param('groupId') groupId: string, @Param('disciplineId') disciplineId: string) {
+    return this.schedulesService.getScheduleByGroupAndDiscipline({ groupId, disciplineId });
   }
 }

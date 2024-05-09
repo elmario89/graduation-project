@@ -73,7 +73,7 @@ export class LocationsService {
     const { day, time } = dto;
     const schedules = await this.scheduleRepository.findAll({
       where: {
-        time,
+        timeStart: time,
         day,
       },
     });

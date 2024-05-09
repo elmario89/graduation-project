@@ -2,6 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { CreateScheduleDto } from './dto/create-schedule-dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Schedule } from './schedule.model';
+import { GetScheduleByGroupAndDisciplineDto } from './dto/get-schedule-by-group-and-discipline-dto';
+import { Discipline } from 'src/disciplines/discipline.model';
+import { Location } from 'src/locations/location.model';
+import { Group } from 'src/groups/group.model';
+import { Teacher } from 'src/teachers/teacher.model';
 
 @Injectable()
 export class SchedulesService {
@@ -42,6 +47,27 @@ export class SchedulesService {
     return await this.scheduleRepository.findOne({
       where: { id },
       include: { all: true },
+    });
+  }
+
+  async getScheduleByGroupAndDiscipline(dto: GetScheduleByGroupAndDisciplineDto) {
+    const { disciplineId, groupId } = dto;
+    return await this.scheduleRepository.findAll({
+      where: { groupId, disciplineId },
+      include: [
+        {
+          model: Discipline,
+        },
+        {
+          model: Location,
+        },
+        {
+          model: Group,
+        },
+        {
+          model: Teacher,
+        },
+      ],
     });
   }
 

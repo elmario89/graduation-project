@@ -3,14 +3,12 @@ import { hash } from 'bcryptjs';
 import { InjectModel } from '@nestjs/sequelize';
 import { Student } from './student.model';
 import { CreateStudentDto } from './dto/create-student-dto';
-import { GroupsService } from '../groups/groups.service';
 import { Group } from '../groups/group.model';
 
 @Injectable()
 export class StudentsService {
   constructor(
-    @InjectModel(Student) private studentRepository: typeof Student,
-    private readonly groupsService: GroupsService,
+    @InjectModel(Student) private studentRepository: typeof Student
   ) { }
 
   async createStudent(dto: CreateStudentDto) {
@@ -35,17 +33,10 @@ export class StudentsService {
   }
 
   async getStudentsByGroup(groupId: string) {
-    const students = await this.studentRepository.findAll({
+    return await this.studentRepository.findAll({
       where: { groupId },
       attributes: { exclude: ['password', 'login', 'role'] },
     });
-
-    const group = await this.groupsService.getGroupById(groupId);
-
-    return {
-      group,
-      students,
-    };
   }
 
   async deleteStudent(id: string) {

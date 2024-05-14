@@ -14,7 +14,6 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AdminGuard } from '../auth/admin.guard';
 import { CreateScheduleDto } from './dto/create-schedule-dto';
 import { SchedulesService } from './schedules.service';
-import { Day } from 'src/enums/day.enum';
 
 @ApiTags('Schedules')
 @Controller('schedules')
@@ -89,7 +88,13 @@ export class SchedulesController {
   @ApiResponse({ status: 200, type: Schedule })
   @Get('/discipline/:groupId/:disciplineId')
   @UseGuards(JwtAuthGuard)
-  getScheduleByGroupAndDiscipline(@Param('groupId') groupId: string, @Param('disciplineId') disciplineId: string) {
-    return this.schedulesService.getScheduleByGroupAndDiscipline({ groupId, disciplineId });
+  getScheduleByGroupAndDiscipline(
+    @Param('groupId') groupId: string,
+    @Param('disciplineId') disciplineId: string,
+  ) {
+    return this.schedulesService.getScheduleByGroupAndDiscipline({
+      groupId,
+      disciplineId,
+    });
   }
 }

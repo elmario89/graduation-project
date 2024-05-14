@@ -13,14 +13,14 @@ export class VisitsService {
     @InjectModel(Visit) private visitRepository: typeof Visit,
     @InjectModel(Schedule) private scheduleRepository: typeof Schedule,
     @InjectModel(Location) private locationRepository: typeof Location,
-  ) { }
+  ) {}
 
   async createVisit(dto: CreateVisitDto, forTeacher?: boolean) {
     if (!forTeacher) {
       const { locationId } = await this.scheduleRepository.findOne({
         where: { id: dto.scheduleId },
       });
-      
+
       const { coordinates } = await this.locationRepository.findOne({
         where: { id: locationId },
       });
@@ -45,7 +45,11 @@ export class VisitsService {
     return this.getVisitByScheduleAndStudent({ scheduleId, studentId });
   }
 
-  async deleteVisit(dto: { id: string; studentId: string; scheduleId: string }) {
+  async deleteVisit(dto: {
+    id: string;
+    studentId: string;
+    scheduleId: string;
+  }) {
     const { id, scheduleId, studentId } = dto;
     await this.visitRepository.destroy({ where: { id } });
 
@@ -59,12 +63,12 @@ export class VisitsService {
         scheduleId,
         studentId,
       },
-    })
+    });
   }
 
   async getVisitBySchedule(scheduleId: string) {
     return await this.visitRepository.findAll({
       where: { scheduleId },
-    })
+    });
   }
 }

@@ -8,8 +8,8 @@ import { Group } from '../groups/group.model';
 @Injectable()
 export class StudentsService {
   constructor(
-    @InjectModel(Student) private studentRepository: typeof Student
-  ) { }
+    @InjectModel(Student) private studentRepository: typeof Student,
+  ) {}
 
   async createStudent(dto: CreateStudentDto) {
     const hashPassword = await hash(dto.password, 10);

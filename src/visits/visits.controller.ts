@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { VisitsService } from './visit.service';
@@ -30,7 +38,11 @@ export class VisitsController {
   @ApiResponse({ status: 200, type: Visit })
   @Delete('/teacher/:id/:scheduleId/:studentId')
   @UseGuards(JwtAuthGuard)
-  deleteVisit(@Param('id') id: string, @Param('scheduleId') scheduleId: string, @Param('studentId') studentId: string) {
+  deleteVisit(
+    @Param('id') id: string,
+    @Param('scheduleId') scheduleId: string,
+    @Param('studentId') studentId: string,
+  ) {
     return this.visitsService.deleteVisit({ id, scheduleId, studentId });
   }
 
@@ -38,8 +50,14 @@ export class VisitsController {
   @ApiResponse({ status: 200, type: Visit })
   @Get('/student/:studentId/:scheduleId')
   @UseGuards(JwtAuthGuard)
-  getVisitByScheduleAndStudent(@Param('studentId') studentId: string, @Param('scheduleId') scheduleId: string) {
-    return this.visitsService.getVisitByScheduleAndStudent({ scheduleId, studentId });
+  getVisitByScheduleAndStudent(
+    @Param('studentId') studentId: string,
+    @Param('scheduleId') scheduleId: string,
+  ) {
+    return this.visitsService.getVisitByScheduleAndStudent({
+      scheduleId,
+      studentId,
+    });
   }
 
   @ApiOperation({ summary: 'Get visit by schedule and student' })

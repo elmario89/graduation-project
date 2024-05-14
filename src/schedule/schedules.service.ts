@@ -50,7 +50,9 @@ export class SchedulesService {
     });
   }
 
-  async getScheduleByGroupAndDiscipline(dto: GetScheduleByGroupAndDisciplineDto) {
+  async getScheduleByGroupAndDiscipline(
+    dto: GetScheduleByGroupAndDisciplineDto,
+  ) {
     const { disciplineId, groupId } = dto;
     return await this.scheduleRepository.findAll({
       where: { groupId, disciplineId },

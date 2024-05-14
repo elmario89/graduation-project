@@ -24,5 +24,5 @@ export class CreateVisitDto {
     example: '{ lng: 55.797258, lat: 49.134325 }',
     description: 'Coordinates',
   })
-  readonly coordinates: Coordinate;
+  readonly coordinates?: Coordinate;
 }

@@ -13,29 +13,43 @@ export class VisitsService {
     @InjectModel(Visit) private visitRepository: typeof Visit,
     @InjectModel(Schedule) private scheduleRepository: typeof Schedule,
     @InjectModel(Location) private locationRepository: typeof Location,
-  ) {}
+  ) { }
 
-  async createVisit(dto: CreateVisitDto) {
-    const { locationId } = await this.scheduleRepository.findOne({
-      where: { id: dto.scheduleId },
-    });
+  async createVisit(dto: CreateVisitDto, forTeacher?: boolean) {
+    if (!forTeacher) {
+      const { locationId } = await this.scheduleRepository.findOne({
+        where: { id: dto.scheduleId },
+      });
+      
+      const { coordinates } = await this.locationRepository.findOne({
+        where: { id: locationId },
+      });
 
-    const { coordinates } = await this.locationRepository.findOne({
-      where: { id: locationId },
-    });
+      const { lng, lat } = dto.coordinates;
+      const userLocation = [lng, lat];
+      const polygon = coordinates.coordinates[0];
 
-    const { lng, lat } = dto.coordinates;
-    const userLocation = [lng, lat];
-    const polygon = coordinates.coordinates[0];
-
-    if (!pointInPolygon(userLocation, polygon)) {
-      throw new HttpException(
-        'You are not inside auditory',
-        HttpStatus.FORBIDDEN,
-      );
+      if (!pointInPolygon(userLocation, polygon)) {
+        throw new HttpException(
+          'You are not inside auditory',
+          HttpStatus.FORBIDDEN,
+        );
+      }
+      return;
     }
 
-    return await this.visitRepository.create(dto);
+    await this.visitRepository.create(dto);
+
+    const { scheduleId, studentId } = dto;
+
+    return this.getVisitByScheduleAndStudent({ scheduleId, studentId });
+  }
+
+  async deleteVisit(dto: { id: string; studentId: string; scheduleId: string }) {
+    const { id, scheduleId, studentId } = dto;
+    await this.visitRepository.destroy({ where: { id } });
+
+    return this.getVisitByScheduleAndStudent({ scheduleId, studentId });
   }
 
   async getVisitByScheduleAndStudent(dto: GetVisitByScheduleAndStudent) {
@@ -45,6 +59,12 @@ export class VisitsService {
         scheduleId,
         studentId,
       },
+    })
+  }
+
+  async getVisitBySchedule(scheduleId: string) {
+    return await this.visitRepository.findAll({
+      where: { scheduleId },
     })
   }
 }

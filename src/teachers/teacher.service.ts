@@ -5,6 +5,9 @@ import { Teacher } from './teacher.model';
 import { CreateTeacherDto } from './dto/create-teacher-dto';
 import { Discipline } from '../disciplines/discipline.model';
 import { TeacherDisciplines } from './teacher-disciplines.model';
+import { Op } from 'sequelize';
+import { Schedule } from 'src/schedule/schedule.model';
+import { Group } from 'src/groups/group.model';
 
 @Injectable()
 export class TeacherService {
@@ -12,6 +15,9 @@ export class TeacherService {
     @InjectModel(Teacher) private teacherRepository: typeof Teacher,
     @InjectModel(TeacherDisciplines)
     private teacherDisciplinesRepository: typeof TeacherDisciplines,
+    @InjectModel(Discipline) private disciplinesRepository: typeof Discipline,
+    @InjectModel(Schedule) private schedulesRepository: typeof Schedule,
+    @InjectModel(Group) private groupsRepository: typeof Group,
   ) {}
 
   async createTeacher(dto: CreateTeacherDto) {
@@ -65,6 +71,34 @@ export class TeacherService {
 
   async deleteTeacher(id: string) {
     return await this.teacherRepository.destroy({ where: { id } });
+  }
+
+  async getTeacherGroups(teacherId: string, disciplineId: string) {
+    const schedules = await this.schedulesRepository.findAll({
+      where: { teacherId, disciplineId },
+    });
+
+    return await this.groupsRepository.findAll({
+      where: {
+        id: {
+          [Op.in]: schedules.map((d) => d.groupId),
+        },
+      },
+    });
+  }
+
+  async getTeacherDisciplines(teacherId: string) {
+    const teacherDisciplines = await this.teacherDisciplinesRepository.findAll({
+      where: { teacherId },
+    });
+
+    return await this.disciplinesRepository.findAll({
+      where: {
+        id: {
+          [Op.in]: teacherDisciplines.map((d) => d.disciplineId),
+        },
+      },
+    });
   }
 
   async updateTeacher(dto: CreateTeacherDto & { id: string }) {

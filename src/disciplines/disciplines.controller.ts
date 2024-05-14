@@ -13,8 +13,6 @@ import { CreateDisciplineDto } from './dto/create-discipline-dto';
 import { DisciplinesService } from './disciplines.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AdminGuard } from '../auth/admin.guard';
-import { Group } from '../groups/group.model';
-import { Faculty } from '../faculties/faculty.model';
 
 @ApiTags('Disciplines')
 @Controller('disciplines')
@@ -40,7 +38,7 @@ export class DisciplinesController {
   }
 
   @ApiOperation({ summary: 'Delete discipline' })
-  @ApiResponse({ status: 200, type: Group })
+  @ApiResponse({ status: 200, type: Discipline })
   @Delete('/:id')
   @UseGuards(JwtAuthGuard)
   @UseGuards(AdminGuard)
@@ -49,10 +47,10 @@ export class DisciplinesController {
   }
 
   @ApiOperation({ summary: 'Get discipline by id' })
-  @ApiResponse({ status: 200, type: Faculty })
+  @ApiResponse({ status: 200, type: Discipline })
   @Get('/:id')
   @UseGuards(JwtAuthGuard)
-  getFacultyById(@Param('id') id: string) {
+  getDisciplineById(@Param('id') id: string) {
     return this.disciplinesService.getDisciplineById(id);
   }
 }

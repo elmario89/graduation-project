@@ -14,6 +14,8 @@ import { AdminGuard } from '../auth/admin.guard';
 import { Teacher } from './teacher.model';
 import { TeacherService } from './teacher.service';
 import { CreateTeacherDto } from './dto/create-teacher-dto';
+import { Discipline } from 'src/disciplines/discipline.model';
+import { Group } from 'src/groups/group.model';
 
 @ApiTags('Teachers')
 @Controller('teachers')
@@ -63,5 +65,24 @@ export class TeacherController {
   @UseGuards(AdminGuard)
   update(@Param('id') id: string, @Body() teacherDto: CreateTeacherDto) {
     return this.teachersService.updateTeacher({ ...teacherDto, id });
+  }
+
+  @ApiOperation({ summary: 'Get teacher disciplines' })
+  @ApiResponse({ status: 200, type: Discipline })
+  @Get('/teacher/:teacherId')
+  @UseGuards(JwtAuthGuard)
+  getDisciplineByTeacherId(@Param('teacherId') teacherId: string) {
+    return this.teachersService.getTeacherDisciplines(teacherId);
+  }
+
+  @ApiOperation({ summary: 'Get teacher groups' })
+  @ApiResponse({ status: 200, type: Group })
+  @Get('/groups/:teacherId/:disciplineId')
+  @UseGuards(JwtAuthGuard)
+  getTeacherGroups(
+    @Param('teacherId') teacherId: string,
+    @Param('disciplineId') disciplineId: string,
+  ) {
+    return this.teachersService.getTeacherGroups(teacherId, disciplineId);
   }
 }

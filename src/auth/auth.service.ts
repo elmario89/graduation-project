@@ -17,7 +17,7 @@ export class AuthService {
     private readonly studentsService: StudentsService,
     private readonly teachersService: TeacherService,
     private readonly jwtService: JwtService,
-  ) { }
+  ) {}
 
   async login(userDto: UserDto) {
     const user = await this.validateUser(userDto);
@@ -38,19 +38,16 @@ export class AuthService {
   }
 
   private async getUserByRole(userDto: UserDto) {
-    let user;
-
     switch (userDto.role) {
       case UserRole.Student: {
-        return user = await this.studentsService.getStudentByLogin(userDto.login);
-      };
+        return await this.studentsService.getStudentByLogin(userDto.login);
+      }
       case UserRole.Teacher: {
-        console.log('teacher');
-        return user = await this.teachersService.getTeacherByLogin(userDto.login);
-      };
+        return await this.teachersService.getTeacherByLogin(userDto.login);
+      }
       case UserRole.Admin: {
-        return user = await this.usersService.getUsersByLogin(userDto.login)
-      };
+        return await this.usersService.getUsersByLogin(userDto.login);
+      }
     }
   }
 

@@ -29,6 +29,13 @@ export class SchedulesService {
     return await this.scheduleRepository.destroy({ where: { id } });
   }
 
+  async getSchedulesByTeacherId(teacherId: string) {
+    return await this.scheduleRepository.findAll({
+      where: { teacherId },
+      include: { all: true },
+    });
+  }
+
   async getScheduleByGroupId(groupId: string) {
     return await this.scheduleRepository.findAll({
       where: { groupId },

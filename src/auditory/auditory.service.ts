@@ -90,6 +90,11 @@ export class AuditoriesService {
       where: {
         id: { [Op.notIn]: schedules.map((s) => s.auditoryId) },
       },
+      include: [
+        {
+          model: Building,
+        },
+      ],
     });
   }
 

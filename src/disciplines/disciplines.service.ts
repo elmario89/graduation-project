@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Discipline } from './discipline.model';
 import { CreateDisciplineDto } from './dto/create-discipline-dto';
 import { Teacher } from '../teachers/teacher.model';
+import { Faculty } from 'src/faculties/faculty.model';
 
 @Injectable()
 export class DisciplinesService {
@@ -26,12 +27,17 @@ export class DisciplinesService {
 
   async getAllDisciplines() {
     return await this.disciplineRepository.findAll({
-      include: {
-        model: Teacher,
-        through: {
-          attributes: [],
+      include: [
+        {
+          model: Teacher,
+          through: {
+            attributes: [],
+          },
         },
-      },
+        {
+          model: Faculty,
+        },
+      ],
       order: [['updatedAt', 'DESC']],
     });
   }

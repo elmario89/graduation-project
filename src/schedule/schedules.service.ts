@@ -7,6 +7,7 @@ import { Discipline } from 'src/disciplines/discipline.model';
 import { Auditory } from 'src/auditory/auditory.model';
 import { Group } from 'src/groups/group.model';
 import { Teacher } from 'src/teachers/teacher.model';
+import { Building } from 'src/building/building.model';
 
 @Injectable()
 export class SchedulesService {
@@ -32,28 +33,91 @@ export class SchedulesService {
   async getSchedulesByTeacherId(teacherId: string) {
     return await this.scheduleRepository.findAll({
       where: { teacherId },
-      include: { all: true },
+      include: [
+        {
+          model: Auditory,
+          include: [
+            {
+              model: Building,
+            },
+          ],
+        },
+        {
+          model: Discipline,
+        },
+        {
+          model: Teacher,
+        },
+        {
+          model: Group,
+        },
+      ],
     });
   }
 
   async getScheduleByGroupId(groupId: string) {
     return await this.scheduleRepository.findAll({
       where: { groupId },
-      include: { all: true },
+      include: [
+        {
+          model: Auditory,
+          include: [
+            {
+              model: Building,
+            },
+          ],
+        },
+        {
+          model: Discipline,
+        },
+        {
+          model: Teacher,
+        },
+      ],
     });
   }
 
-  async getScheduleByTeacherId(teacherId: string) {
-    return await this.scheduleRepository.findAll({
-      where: { teacherId },
-      include: { all: true },
-    });
-  }
+  // async getScheduleByTeacherId(teacherId: string) {
+  //   return await this.scheduleRepository.findAll({
+  //     where: { teacherId },
+  //     include: [
+  //       {
+  //         model: Auditory,
+  //         include: [
+  //           {
+  //             model: Building,
+  //           },
+  //         ],
+  //       },
+  //       {
+  //         model: Discipline,
+  //       },
+  //       {
+  //         model: Teacher,
+  //       },
+  //     ],
+  //   });
+  // }
 
   async getScheduleById(id: string) {
     return await this.scheduleRepository.findOne({
       where: { id },
-      include: { all: true },
+      include: [
+        {
+          model: Auditory,
+          include: [
+            {
+              model: Building,
+            },
+          ],
+        },
+        {
+          model: Discipline,
+        },
+        {
+          model: Teacher,
+        },
+      ],
     });
   }
 

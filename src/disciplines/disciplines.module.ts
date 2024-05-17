@@ -7,6 +7,7 @@ import { DisciplinesController } from './disciplines.controller';
 import { Teacher } from '../teachers/teacher.model';
 import { TeacherDiscipline } from '../teachers/teacher-discipline.model';
 import { Schedule } from '../schedule/schedule.model';
+import { Faculty } from '../faculties/faculty.model';
 
 @Module({
   providers: [DisciplinesService],
@@ -17,6 +18,7 @@ import { Schedule } from '../schedule/schedule.model';
       Teacher,
       TeacherDiscipline,
       Schedule,
+      Faculty,
     ]),
     forwardRef(() => AuthModule),
   ],

@@ -8,6 +8,8 @@ import { TeacherDiscipline } from './teacher-discipline.model';
 import { Op } from 'sequelize';
 import { Schedule } from 'src/schedule/schedule.model';
 import { Group } from 'src/groups/group.model';
+import { Faculty } from 'src/faculties/faculty.model';
+import { TeacherFaculty } from './teacher-faculty.model';
 
 @Injectable()
 export class TeacherService {
@@ -15,6 +17,8 @@ export class TeacherService {
     @InjectModel(Teacher) private teacherRepository: typeof Teacher,
     @InjectModel(TeacherDiscipline)
     private teacherDisciplinesRepository: typeof TeacherDiscipline,
+    @InjectModel(TeacherFaculty)
+    private teacherFacultiesRepository: typeof TeacherFaculty,
     @InjectModel(Discipline) private disciplinesRepository: typeof Discipline,
     @InjectModel(Schedule) private schedulesRepository: typeof Schedule,
     @InjectModel(Group) private groupsRepository: typeof Group,
@@ -26,10 +30,18 @@ export class TeacherService {
       ...dto,
       password: hashPassword,
     });
+
     dto.disciplineIds.map(async (disciplineId) => {
       await this.teacherDisciplinesRepository.create({
         teacherId: teacher.id,
         disciplineId: disciplineId,
+      });
+    });
+
+    dto.facultiesIds.map(async (facultyId) => {
+      await this.teacherFacultiesRepository.create({
+        teacherId: teacher.id,
+        facultyId: facultyId,
       });
     });
 
@@ -45,12 +57,14 @@ export class TeacherService {
   async getTeacherById(id: string) {
     return await this.teacherRepository.findOne({
       where: { id },
-      include: {
-        model: Discipline,
-        through: {
-          attributes: [],
+      include: [
+        {
+          model: Faculty,
         },
-      },
+        {
+          model: Discipline,
+        },
+      ],
     });
   }
 
@@ -111,20 +125,38 @@ export class TeacherService {
       where: { teacherId: dto.id },
     });
 
+    await this.teacherFacultiesRepository.destroy({
+      where: { facultyId: dto.id },
+    });
+
     await Promise.all(
       dto.disciplineIds.map(async (disciplineId) => {
         await this.teacherDisciplinesRepository.create({
           teacherId: dto.id,
-          disciplineId: disciplineId,
+          disciplineId,
+        });
+      }),
+    );
+
+    await Promise.all(
+      dto.facultiesIds.map(async (facultyId) => {
+        await this.teacherFacultiesRepository.create({
+          teacherId: dto.id,
+          facultyId,
         });
       }),
     );
 
     return await this.teacherRepository.findOne({
       where: { id: dto.id },
-      include: {
-        model: Discipline,
-      },
+      include: [
+        {
+          model: Faculty,
+        },
+        {
+          model: Discipline,
+        },
+      ],
     });
   }
 }

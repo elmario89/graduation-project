@@ -12,6 +12,8 @@ import { Schedule } from 'src/schedule/schedule.model';
 import { GroupsModule } from 'src/groups/groups.module';
 import { Group } from 'src/groups/group.model';
 import { TeacherFaculty } from './teacher-faculty.model';
+import { Faculty } from 'src/faculties/faculty.model';
+import { FacultiesModule } from 'src/faculties/faculties.module';
 
 @Module({
   controllers: [TeacherController],
@@ -24,11 +26,13 @@ import { TeacherFaculty } from './teacher-faculty.model';
       TeacherFaculty,
       Schedule,
       Group,
+      Faculty,
     ]),
     forwardRef(() => AuthModule),
     forwardRef(() => DisciplinesModule),
     forwardRef(() => SchedulesModule),
     forwardRef(() => GroupsModule),
+    forwardRef(() => FacultiesModule),
   ],
   exports: [TeacherService],
 })

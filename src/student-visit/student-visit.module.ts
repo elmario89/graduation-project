@@ -8,7 +8,7 @@ import { Student } from '../students/student.model';
 import { Schedule } from '../schedule/schedule.model';
 import { Auditory } from '../auditory/auditory.model';
 import { SchedulesModule } from 'src/schedule/schedules.module';
-import { AuditorysModule } from 'src/auditory/auditory.module';
+import { AuditoriesModule } from 'src/auditory/auditory.module';
 
 @Module({
   controllers: [StudentVisitsController],
@@ -17,7 +17,7 @@ import { AuditorysModule } from 'src/auditory/auditory.module';
     SequelizeModule.forFeature([StudentVisit, Schedule, Student, Auditory]),
     forwardRef(() => AuthModule),
     forwardRef(() => SchedulesModule),
-    forwardRef(() => AuditorysModule),
+    forwardRef(() => AuditoriesModule),
   ],
 })
 export class StudentVisitsModule {}

@@ -18,7 +18,7 @@ import { Group } from '../groups/group.model';
 import { Faculty } from '../faculties/faculty.model';
 
 @ApiTags('Buildings')
-@Controller('building')
+@Controller('buildings')
 export class BuildingsController {
   constructor(private readonly buildingsService: BuildingsService) {}
 

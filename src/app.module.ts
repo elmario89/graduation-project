@@ -19,7 +19,7 @@ import { StudentVisitsModule } from './student-visit/student-visit.module';
 import { StudentVisit } from './student-visit/student-visit.model';
 import { FacultiesModule } from './faculties/faculties.module';
 import { Faculty } from './faculties/faculty.model';
-import { AuditorysModule } from './auditory/auditory.module';
+import { AuditoriesModule } from './auditory/auditory.module';
 import { Auditory } from './auditory/auditory.model';
 import { TeacherFaculty } from './teachers/teacher-faculty.model';
 import { BuildingsModule } from './building/building.module';
@@ -62,7 +62,7 @@ import { Building } from './building/building.model';
     SchedulesModule,
     StudentVisitsModule,
     FacultiesModule,
-    AuditorysModule,
+    AuditoriesModule,
     BuildingsModule,
   ],
 })

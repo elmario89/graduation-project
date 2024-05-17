@@ -11,17 +11,17 @@ import {
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Auditory } from './auditory.model';
 import { CreateAuditoryDto } from './dto/create-auditory-dto';
-import { AuditorysService } from './auditory.service';
+import { AuditoriesService } from './auditory.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AdminGuard } from '../auth/admin.guard';
 import { Group } from '../groups/group.model';
 import { Faculty } from '../faculties/faculty.model';
 import { Day } from 'src/enums/day.enum';
 
-@ApiTags('Auditorys')
-@Controller('auditory')
-export class AuditorysController {
-  constructor(private readonly auditoryService: AuditorysService) {}
+@ApiTags('Auditories')
+@Controller('auditories')
+export class AuditoriesController {
+  constructor(private readonly auditoryService: AuditoriesService) {}
 
   @ApiOperation({ summary: 'Create auditory' })
   @ApiResponse({ status: 200, type: Auditory })
@@ -46,8 +46,8 @@ export class AuditorysController {
   @Get()
   @UseGuards(JwtAuthGuard)
   @UseGuards(AdminGuard)
-  getAllAuditorys() {
-    return this.auditoryService.getAllAuditorys();
+  getAllAuditories() {
+    return this.auditoryService.getAllAuditories();
   }
 
   @ApiOperation({ summary: 'Get auditory by day' })
@@ -55,7 +55,7 @@ export class AuditorysController {
   @Get('/:day/:time')
   @UseGuards(JwtAuthGuard)
   @UseGuards(AdminGuard)
-  getAuditorysByTimeAndDay(
+  getAuditoriesByTimeAndDay(
     @Param('day') day: Day,
     @Param('time') time: string,
   ) {

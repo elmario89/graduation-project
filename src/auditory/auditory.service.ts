@@ -2,13 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Auditory } from './auditory.model';
 import { CreateAuditoryDto } from './dto/create-auditory-dto';
-import { GetAuditorysDto } from './dto/get-auditory-dto';
+import { GetAuditoriesDto } from './dto/get-auditory-dto';
 import { Schedule } from 'src/schedule/schedule.model';
 import { Op } from 'sequelize';
 import * as hull from 'geo-convex-hull';
+import { Building } from 'src/building/building.model';
 
 @Injectable()
-export class AuditorysService {
+export class AuditoriesService {
   constructor(
     @InjectModel(Auditory) private auditoryRepository: typeof Auditory,
     @InjectModel(Schedule) private scheduleRepository: typeof Schedule,
@@ -62,14 +63,19 @@ export class AuditorysService {
     return await this.auditoryRepository.destroy({ where: { id } });
   }
 
-  async getAllAuditorys() {
+  async getAllAuditories() {
     return await this.auditoryRepository.findAll({
       order: [['updatedAt', 'DESC']],
       attributes: { exclude: ['coordinates'] },
+      include: [
+        {
+          model: Building,
+        },
+      ],
     });
   }
 
-  async getAuditoryByTimeAndDay(dto: GetAuditorysDto) {
+  async getAuditoryByTimeAndDay(dto: GetAuditoriesDto) {
     const { day, time } = dto;
     const schedules = await this.scheduleRepository.findAll({
       where: {
@@ -90,9 +96,14 @@ export class AuditorysService {
   async getAuditoryById(id: string) {
     const result = await this.auditoryRepository.findOne({
       where: { id },
+      include: [
+        {
+          model: Building,
+        },
+      ],
     });
 
-    const { floor, coordinates, number } = result;
+    const { floor, coordinates, number, building, buildingId } = result;
 
     return {
       id,
@@ -102,6 +113,8 @@ export class AuditorysService {
         lng: c[0],
         lat: c[1],
       })),
+      building,
+      buildingId,
     };
   }
 }

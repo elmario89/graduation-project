@@ -18,7 +18,7 @@ interface StudentCreationAttrs {
   role: UserRole;
 }
 
-@Table({ tableName: 'students' })
+@Table({ tableName: 'student' })
 export class Student extends Model<Student, StudentCreationAttrs> {
   @ApiProperty({
     example: 'b70f4034-5328-4c02-b652-d4a4414f3a29',

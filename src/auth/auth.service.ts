@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserDto } from './dto/user-dto';
-import { UsersService } from '../users/users.service';
+import { AdminsService } from '../admins/admin.service';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../users/user.model';
+import { Admin } from '../admins/admin.model';
 import { compare } from 'bcryptjs';
 import { UserRole } from 'src/enums/user-role.enum';
 import { StudentsService } from 'src/students/students.service';
@@ -13,7 +13,7 @@ import { Teacher } from 'src/teachers/teacher.model';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UsersService,
+    private readonly adminsService: AdminsService,
     private readonly studentsService: StudentsService,
     private readonly teachersService: TeacherService,
     private readonly jwtService: JwtService,
@@ -24,7 +24,7 @@ export class AuthService {
     return await this.generateToken(user);
   }
 
-  private async generateToken(user: User | Student | Teacher) {
+  private async generateToken(user: Admin | Student | Teacher) {
     const payload = { login: user.login, id: user.id, role: user.role };
 
     if (user.role === UserRole.Student) {
@@ -46,7 +46,7 @@ export class AuthService {
         return await this.teachersService.getTeacherByLogin(userDto.login);
       }
       case UserRole.Admin: {
-        return await this.usersService.getUsersByLogin(userDto.login);
+        return await this.adminsService.getAdminsByLogin(userDto.login);
       }
     }
   }

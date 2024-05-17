@@ -72,7 +72,7 @@ export class TeacherController {
   @Get('/teacher/:teacherId')
   @UseGuards(JwtAuthGuard)
   getDisciplineByTeacherId(@Param('teacherId') teacherId: string) {
-    return this.teachersService.getTeacherDisciplines(teacherId);
+    return this.teachersService.getTeacherDiscipline(teacherId);
   }
 
   @ApiOperation({ summary: 'Get teacher groups' })

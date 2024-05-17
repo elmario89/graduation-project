@@ -1,35 +1,35 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateVisitDto } from './dto/create-visit-dto';
+import { CreateStudentVisitDto } from './dto/create-student-visit-dto';
 import { InjectModel } from '@nestjs/sequelize';
-import { Visit } from './visit.model';
+import { StudentVisit } from './student-visit.model';
 import { Schedule } from 'src/schedule/schedule.model';
-import { Location } from 'src/locations/location.model';
+import { Auditory } from 'src/auditory/auditory.model';
 import * as pointInPolygon from 'point-in-polygon';
-import { GetVisitByScheduleAndStudent } from './dto/get-visit-by-schedule-and-student-dto';
+import { GetStudentVisitByScheduleAndStudent } from './dto/get-student-visit-by-schedule-and-student-dto';
 
 @Injectable()
-export class VisitsService {
+export class StudentVisitsService {
   constructor(
-    @InjectModel(Visit) private visitRepository: typeof Visit,
+    @InjectModel(StudentVisit) private visitRepository: typeof StudentVisit,
     @InjectModel(Schedule) private scheduleRepository: typeof Schedule,
-    @InjectModel(Location) private locationRepository: typeof Location,
+    @InjectModel(Auditory) private auditoryRepository: typeof Auditory,
   ) {}
 
-  async createVisit(dto: CreateVisitDto, forTeacher?: boolean) {
+  async createStudentVisit(dto: CreateStudentVisitDto, forTeacher?: boolean) {
     if (!forTeacher) {
-      const { locationId } = await this.scheduleRepository.findOne({
+      const { auditoryId } = await this.scheduleRepository.findOne({
         where: { id: dto.scheduleId },
       });
 
-      const { coordinates } = await this.locationRepository.findOne({
-        where: { id: locationId },
+      const { coordinates } = await this.auditoryRepository.findOne({
+        where: { id: auditoryId },
       });
 
       const { lng, lat } = dto.coordinates;
-      const userLocation = [lng, lat];
+      const userAuditory = [lng, lat];
       const polygon = coordinates.coordinates[0];
 
-      if (!pointInPolygon(userLocation, polygon)) {
+      if (!pointInPolygon(userAuditory, polygon)) {
         throw new HttpException(
           'You are not inside auditory',
           HttpStatus.FORBIDDEN,
@@ -42,10 +42,10 @@ export class VisitsService {
 
     const { scheduleId, studentId } = dto;
 
-    return this.getVisitByScheduleAndStudent({ scheduleId, studentId });
+    return this.getStudentVisitByScheduleAndStudent({ scheduleId, studentId });
   }
 
-  async deleteVisit(dto: {
+  async deleteStudentVisit(dto: {
     id: string;
     studentId: string;
     scheduleId: string;
@@ -53,10 +53,10 @@ export class VisitsService {
     const { id, scheduleId, studentId } = dto;
     await this.visitRepository.destroy({ where: { id } });
 
-    return this.getVisitByScheduleAndStudent({ scheduleId, studentId });
+    return this.getStudentVisitByScheduleAndStudent({ scheduleId, studentId });
   }
 
-  async getVisitByScheduleAndStudent(dto: GetVisitByScheduleAndStudent) {
+  async getStudentVisitByScheduleAndStudent(dto: GetStudentVisitByScheduleAndStudent) {
     const { scheduleId, studentId } = dto;
     return await this.visitRepository.findAll({
       where: {
@@ -66,7 +66,7 @@ export class VisitsService {
     });
   }
 
-  async getVisitBySchedule(scheduleId: string) {
+  async getStudentVisitBySchedule(scheduleId: string) {
     return await this.visitRepository.findAll({
       where: { scheduleId },
     });

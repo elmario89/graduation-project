@@ -23,7 +23,7 @@ export interface Test {
   disciplineId: string;
 }
 
-@Table({ tableName: 'groups' })
+@Table({ tableName: 'group' })
 export class Group extends Model<Group, GroupCreationAttrs> {
   @ApiProperty({
     example: 'b70f4034-5328-4c02-b652-d4a4414f3a29',

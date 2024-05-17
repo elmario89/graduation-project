@@ -5,12 +5,13 @@ import { AuthModule } from '../auth/auth.module';
 import { TeacherService } from './teacher.service';
 import { Teacher } from './teacher.model';
 import { Discipline } from '../disciplines/discipline.model';
-import { TeacherDisciplines } from './teacher-disciplines.model';
+import { TeacherDiscipline } from './teacher-discipline.model';
 import { DisciplinesModule } from 'src/disciplines/disciplines.module';
 import { SchedulesModule } from 'src/schedule/schedules.module';
 import { Schedule } from 'src/schedule/schedule.model';
 import { GroupsModule } from 'src/groups/groups.module';
 import { Group } from 'src/groups/group.model';
+import { TeacherFaculty } from './teacher-faculty.model';
 
 @Module({
   controllers: [TeacherController],
@@ -19,7 +20,8 @@ import { Group } from 'src/groups/group.model';
     SequelizeModule.forFeature([
       Teacher,
       Discipline,
-      TeacherDisciplines,
+      TeacherDiscipline,
+      TeacherFaculty,
       Schedule,
       Group,
     ]),

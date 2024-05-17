@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Teacher } from './teacher.model';
 import { CreateTeacherDto } from './dto/create-teacher-dto';
 import { Discipline } from '../disciplines/discipline.model';
-import { TeacherDisciplines } from './teacher-disciplines.model';
+import { TeacherDiscipline } from './teacher-discipline.model';
 import { Op } from 'sequelize';
 import { Schedule } from 'src/schedule/schedule.model';
 import { Group } from 'src/groups/group.model';
@@ -13,8 +13,8 @@ import { Group } from 'src/groups/group.model';
 export class TeacherService {
   constructor(
     @InjectModel(Teacher) private teacherRepository: typeof Teacher,
-    @InjectModel(TeacherDisciplines)
-    private teacherDisciplinesRepository: typeof TeacherDisciplines,
+    @InjectModel(TeacherDiscipline)
+    private teacherDisciplinesRepository: typeof TeacherDiscipline,
     @InjectModel(Discipline) private disciplinesRepository: typeof Discipline,
     @InjectModel(Schedule) private schedulesRepository: typeof Schedule,
     @InjectModel(Group) private groupsRepository: typeof Group,
@@ -87,7 +87,7 @@ export class TeacherService {
     });
   }
 
-  async getTeacherDisciplines(teacherId: string) {
+  async getTeacherDiscipline(teacherId: string) {
     const teacherDisciplines = await this.teacherDisciplinesRepository.findAll({
       where: { teacherId },
     });

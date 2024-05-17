@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Schedule } from './schedule.model';
 import { GetScheduleByGroupAndDisciplineDto } from './dto/get-schedule-by-group-and-discipline-dto';
 import { Discipline } from 'src/disciplines/discipline.model';
-import { Location } from 'src/locations/location.model';
+import { Auditory } from 'src/auditory/auditory.model';
 import { Group } from 'src/groups/group.model';
 import { Teacher } from 'src/teachers/teacher.model';
 
@@ -68,7 +68,7 @@ export class SchedulesService {
           model: Discipline,
         },
         {
-          model: Location,
+          model: Auditory,
         },
         {
           model: Group,

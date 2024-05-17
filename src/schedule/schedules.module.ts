@@ -9,7 +9,7 @@ import { GroupsModule } from '../groups/groups.module';
 import { Discipline } from '../disciplines/discipline.model';
 import { Teacher } from '../teachers/teacher.model';
 import { Student } from '../students/student.model';
-import { Location } from '../locations/location.model';
+import { Auditory } from '../auditory/auditory.model';
 
 @Module({
   controllers: [SchedulesController],
@@ -21,7 +21,7 @@ import { Location } from '../locations/location.model';
       Discipline,
       Teacher,
       Student,
-      Location,
+      Auditory,
     ]),
     forwardRef(() => AuthModule),
     forwardRef(() => GroupsModule),

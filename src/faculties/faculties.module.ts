@@ -5,12 +5,13 @@ import { Faculty } from './faculty.model';
 import { Group } from '../groups/group.model';
 import { FacultiesService } from './faculties.service';
 import { FacultiesController } from './faculties.controller';
+import { Teacher } from 'src/teachers/teacher.model';
 
 @Module({
   providers: [FacultiesService],
   controllers: [FacultiesController],
   imports: [
-    SequelizeModule.forFeature([Faculty, Group]),
+    SequelizeModule.forFeature([Faculty, Group, Teacher]),
     forwardRef(() => AuthModule),
   ],
   exports: [FacultiesService],

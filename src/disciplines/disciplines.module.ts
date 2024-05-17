@@ -5,7 +5,7 @@ import { AuthModule } from '../auth/auth.module';
 import { Discipline } from './discipline.model';
 import { DisciplinesController } from './disciplines.controller';
 import { Teacher } from '../teachers/teacher.model';
-import { TeacherDisciplines } from '../teachers/teacher-disciplines.model';
+import { TeacherDiscipline } from '../teachers/teacher-discipline.model';
 import { Schedule } from '../schedule/schedule.model';
 
 @Module({
@@ -15,7 +15,7 @@ import { Schedule } from '../schedule/schedule.model';
     SequelizeModule.forFeature([
       Discipline,
       Teacher,
-      TeacherDisciplines,
+      TeacherDiscipline,
       Schedule,
     ]),
     forwardRef(() => AuthModule),

@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Student } from './student.model';
 import { CreateStudentDto } from './dto/create-student-dto';
 import { Group } from '../groups/group.model';
+import { Faculty } from 'src/faculties/faculty.model';
 
 @Injectable()
 export class StudentsService {
@@ -50,6 +51,11 @@ export class StudentsService {
       include: [
         {
           model: Group,
+          include: [
+            {
+              model: Faculty,
+            },
+          ],
         },
       ],
     });

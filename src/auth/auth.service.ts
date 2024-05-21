@@ -17,7 +17,7 @@ export class AuthService {
     private readonly studentsService: StudentsService,
     private readonly teachersService: TeacherService,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   async login(userDto: UserDto) {
     const user = await this.validateUser(userDto);
@@ -54,11 +54,15 @@ export class AuthService {
   private async validateUser(userDto: UserDto) {
     const user = await this.getUserByRole(userDto);
 
+    if (!user) {
+      throw new UnauthorizedException({ message: 'Invalid login' });
+    }
+
     const passwordEquals = await compare(userDto.password, user.password);
     if (user && passwordEquals) {
       return user;
     }
 
-    throw new UnauthorizedException({ message: 'Invalid login credentials' });
+    throw new UnauthorizedException({ message: 'Invalid password' });
   }
 }

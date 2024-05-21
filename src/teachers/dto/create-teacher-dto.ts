@@ -14,4 +14,13 @@ export class CreateTeacherDto extends UserDto {
     description: 'Teacher disciplines ids',
   })
   readonly disciplineIds: string[];
+
+  @ApiProperty({
+    example: [
+      'd856b738-dda8-47e6-8be9-f2b2a69dc312',
+      'd856b738-dda8-47e6-8be9-f2b2a69dc312',
+    ],
+    description: 'Teacher faculties ids',
+  })
+  readonly facultiesIds: string[];
 }

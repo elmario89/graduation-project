@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Coordinate } from 'src/types/coordinate';
 
-export class CreateVisitDto {
+export class CreateStudentVisitDto {
   @ApiProperty({
     example: 'b70f4034-5328-4c02-b652-d4a4414f3a29',
     description: 'Student id',

@@ -6,10 +6,10 @@ import {
   Table,
 } from 'sequelize-typescript';
 import { Teacher } from './teacher.model';
-import { Discipline } from '../disciplines/discipline.model';
+import { Faculty } from 'src/faculties/faculty.model';
 
-@Table({ tableName: 'teacher_disciplines', createdAt: false, updatedAt: false })
-export class TeacherDisciplines extends Model<TeacherDisciplines> {
+@Table({ tableName: 'teacher_faculty', createdAt: false, updatedAt: false })
+export class TeacherFaculty extends Model<TeacherFaculty> {
   @Column({
     type: DataType.UUID,
     defaultValue: DataType.UUIDV4,
@@ -24,9 +24,9 @@ export class TeacherDisciplines extends Model<TeacherDisciplines> {
   })
   teacherId: string;
 
-  @ForeignKey(() => Discipline)
+  @ForeignKey(() => Faculty)
   @Column({
     type: DataType.UUID,
   })
-  disciplineId: string;
+  facultyId: string;
 }

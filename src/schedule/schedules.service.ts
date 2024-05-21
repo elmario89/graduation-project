@@ -4,9 +4,10 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Schedule } from './schedule.model';
 import { GetScheduleByGroupAndDisciplineDto } from './dto/get-schedule-by-group-and-discipline-dto';
 import { Discipline } from 'src/disciplines/discipline.model';
-import { Location } from 'src/locations/location.model';
+import { Auditory } from 'src/auditory/auditory.model';
 import { Group } from 'src/groups/group.model';
 import { Teacher } from 'src/teachers/teacher.model';
+import { Building } from 'src/building/building.model';
 
 @Injectable()
 export class SchedulesService {
@@ -29,24 +30,94 @@ export class SchedulesService {
     return await this.scheduleRepository.destroy({ where: { id } });
   }
 
-  async getScheduleByGroupId(groupId: string) {
+  async getSchedulesByTeacherId(teacherId: string) {
     return await this.scheduleRepository.findAll({
-      where: { groupId },
-      include: { all: true },
+      where: { teacherId },
+      include: [
+        {
+          model: Auditory,
+          include: [
+            {
+              model: Building,
+            },
+          ],
+        },
+        {
+          model: Discipline,
+        },
+        {
+          model: Teacher,
+        },
+        {
+          model: Group,
+        },
+      ],
     });
   }
 
-  async getScheduleByTeacherId(teacherId: string) {
+  async getScheduleByGroupId(groupId: string) {
     return await this.scheduleRepository.findAll({
-      where: { teacherId },
-      include: { all: true },
+      where: { groupId },
+      include: [
+        {
+          model: Auditory,
+          include: [
+            {
+              model: Building,
+            },
+          ],
+        },
+        {
+          model: Discipline,
+        },
+        {
+          model: Teacher,
+        },
+      ],
     });
   }
+
+  // async getScheduleByTeacherId(teacherId: string) {
+  //   return await this.scheduleRepository.findAll({
+  //     where: { teacherId },
+  //     include: [
+  //       {
+  //         model: Auditory,
+  //         include: [
+  //           {
+  //             model: Building,
+  //           },
+  //         ],
+  //       },
+  //       {
+  //         model: Discipline,
+  //       },
+  //       {
+  //         model: Teacher,
+  //       },
+  //     ],
+  //   });
+  // }
 
   async getScheduleById(id: string) {
     return await this.scheduleRepository.findOne({
       where: { id },
-      include: { all: true },
+      include: [
+        {
+          model: Auditory,
+          include: [
+            {
+              model: Building,
+            },
+          ],
+        },
+        {
+          model: Discipline,
+        },
+        {
+          model: Teacher,
+        },
+      ],
     });
   }
 
@@ -61,7 +132,7 @@ export class SchedulesService {
           model: Discipline,
         },
         {
-          model: Location,
+          model: Auditory,
         },
         {
           model: Group,

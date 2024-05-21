@@ -12,7 +12,7 @@ import { Teacher } from '../teachers/teacher.model';
 import { Discipline } from '../disciplines/discipline.model';
 import { Day } from '../enums/day.enum';
 import { ScheduleType } from '../enums/schedule-type.enum';
-import { Location } from '../locations/location.model';
+import { Auditory } from '../auditory/auditory.model';
 
 interface ScheduleCreationAttrs {
   date: Date;
@@ -22,7 +22,7 @@ interface ScheduleCreationAttrs {
   day: Day;
 }
 
-@Table({ tableName: 'schedules' })
+@Table({ tableName: 'schedule' })
 export class Schedule extends Model<Schedule, ScheduleCreationAttrs> {
   @ApiProperty({
     example: 'b70f4034-5328-4c02-b652-d4a4414f3a29',
@@ -97,14 +97,14 @@ export class Schedule extends Model<Schedule, ScheduleCreationAttrs> {
   @Column({ type: DataType.UUID, allowNull: false })
   groupId: string;
 
-  @BelongsTo(() => Location)
-  location: Location;
+  @BelongsTo(() => Auditory)
+  auditory: Auditory;
 
   @ApiProperty({
     example: 'b70f4034-5328-4c02-b652-d4a4414f3a29',
-    description: 'Location id',
+    description: 'Auditory id',
   })
-  @ForeignKey(() => Location)
+  @ForeignKey(() => Auditory)
   @Column({ type: DataType.UUID, allowNull: false })
-  locationId: string;
+  auditoryId: string;
 }

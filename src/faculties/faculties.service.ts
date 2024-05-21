@@ -3,6 +3,8 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Faculty } from './faculty.model';
 import { CreateFacultyDto } from './dto/create-faculty-dto';
 import { Group } from '../groups/group.model';
+import { Discipline } from '../disciplines/discipline.model';
+
 @Injectable()
 export class FacultiesService {
   constructor(
@@ -31,6 +33,9 @@ export class FacultiesService {
         {
           model: Group,
         },
+        {
+          model: Discipline,
+        }
       ],
     });
   }

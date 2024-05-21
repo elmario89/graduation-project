@@ -1,8 +1,17 @@
-import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
+import {
+  BelongsTo,
+  Column,
+  DataType,
+  ForeignKey,
+  HasMany,
+  Model,
+  Table,
+} from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
 import { Schedule } from '../schedule/schedule.model';
+import { Building } from 'src/building/building.model';
 
-export interface LocationCreationAttrs {
+export interface AuditoryCreationAttrs {
   buildingNumber: number;
   auditory: number;
   floor: number;
@@ -10,8 +19,8 @@ export interface LocationCreationAttrs {
   coordinates: { type: string; coordinates: number[][][] };
 }
 
-@Table({ tableName: 'locations' })
-export class Location extends Model<Location, LocationCreationAttrs> {
+@Table({ tableName: 'auditory' })
+export class Auditory extends Model<Auditory, AuditoryCreationAttrs> {
   @ApiProperty({
     example: 'b70f4034-5328-4c02-b652-d4a4414f3a29',
     description: 'Unique identificator',
@@ -26,17 +35,10 @@ export class Location extends Model<Location, LocationCreationAttrs> {
 
   @ApiProperty({
     example: '2',
-    description: 'Building number',
+    description: 'Auditory number',
   })
   @Column({ type: DataType.INTEGER, allowNull: false })
-  buildingNumber: number;
-
-  @ApiProperty({
-    example: '2',
-    description: 'auditory number',
-  })
-  @Column({ type: DataType.INTEGER, allowNull: false })
-  auditory: number;
+  number: number;
 
   @ApiProperty({
     example: '2',
@@ -44,13 +46,6 @@ export class Location extends Model<Location, LocationCreationAttrs> {
   })
   @Column({ type: DataType.INTEGER, allowNull: false })
   floor: number;
-
-  @ApiProperty({
-    example: 'Улица  пушкина',
-    description: 'address',
-  })
-  @Column({ type: DataType.STRING, allowNull: false })
-  address: string;
 
   @ApiProperty({
     example: '[25, 25]',
@@ -61,6 +56,17 @@ export class Location extends Model<Location, LocationCreationAttrs> {
     allowNull: false,
   })
   coordinates: { coordinates: { coordinates: number[][] } };
+
+  @BelongsTo(() => Building)
+  building: Building;
+
+  @ApiProperty({
+    example: 'b70f4034-5328-4c02-b652-d4a4414f3a29',
+    description: 'Bulding id',
+  })
+  @ForeignKey(() => Building)
+  @Column({ type: DataType.UUID, allowNull: false })
+  buildingId: string;
 
   @HasMany(() => Schedule)
   schedules: Schedule[];

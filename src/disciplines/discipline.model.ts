@@ -1,21 +1,24 @@
 import {
+  BelongsTo,
   BelongsToMany,
   Column,
   DataType,
+  ForeignKey,
   HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
 import { Teacher } from '../teachers/teacher.model';
-import { TeacherDisciplines } from '../teachers/teacher-disciplines.model';
+import { TeacherDiscipline } from '../teachers/teacher-discipline.model';
 import { Schedule } from '../schedule/schedule.model';
+import { Faculty } from 'src/faculties/faculty.model';
 
 interface DisciplineCreationAttrs {
   name: string;
 }
 
-@Table({ tableName: 'disciplines' })
+@Table({ tableName: 'discipline' })
 export class Discipline extends Model<Discipline, DisciplineCreationAttrs> {
   @ApiProperty({
     example: 'b70f4034-5328-4c02-b652-d4a4414f3a29',
@@ -36,9 +39,20 @@ export class Discipline extends Model<Discipline, DisciplineCreationAttrs> {
   @Column({ type: DataType.STRING, unique: true, allowNull: false })
   name: string;
 
-  @BelongsToMany(() => Teacher, () => TeacherDisciplines)
+  @BelongsToMany(() => Teacher, () => TeacherDiscipline)
   teachers: Teacher[];
 
   @HasMany(() => Schedule)
   schedules: Schedule[];
+
+  @BelongsTo(() => Faculty)
+  faculty: Faculty;
+
+  @ApiProperty({
+    example: 'b70f4034-5328-4c02-b652-d4a4414f3a29',
+    description: 'Faculty id',
+  })
+  @ForeignKey(() => Faculty)
+  @Column({ type: DataType.UUID, allowNull: false })
+  facultyId: string;
 }

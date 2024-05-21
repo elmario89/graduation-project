@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Day } from 'src/enums/day.enum';
 
-export class GetLocationsDto {
+export class GetAuditoriesDto {
   @ApiProperty({
     example: Day.Monday,
     description: 'Day',

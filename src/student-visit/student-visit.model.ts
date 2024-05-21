@@ -9,8 +9,8 @@ import { Student } from '../students/student.model';
 import { ApiProperty } from '@nestjs/swagger';
 import { Schedule } from '../schedule/schedule.model';
 
-@Table({ tableName: 'visits', createdAt: false, updatedAt: false })
-export class Visit extends Model<Visit> {
+@Table({ tableName: 'student_visit', createdAt: false, updatedAt: false })
+export class StudentVisit extends Model<StudentVisit> {
   @Column({
     type: DataType.UUID,
     defaultValue: DataType.UUIDV4,
@@ -33,7 +33,7 @@ export class Visit extends Model<Visit> {
 
   @ApiProperty({
     example: '2024-04-14 23:11:08.371+03',
-    description: 'Visit date',
+    description: 'StudentVisit date',
   })
   @Column({ type: DataType.DATE, allowNull: false })
   date: Date;

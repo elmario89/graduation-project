@@ -9,8 +9,10 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 import { UserRole } from '../enums/user-role.enum';
 import { Discipline } from '../disciplines/discipline.model';
-import { TeacherDisciplines } from './teacher-disciplines.model';
+import { TeacherDiscipline } from './teacher-discipline.model';
 import { Schedule } from '../schedule/schedule.model';
+import { Faculty } from 'src/faculties/faculty.model';
+import { TeacherFaculty } from './teacher-faculty.model';
 
 interface TeacherCreationAttrs {
   login: string;
@@ -20,7 +22,7 @@ interface TeacherCreationAttrs {
   role: UserRole;
 }
 
-@Table({ tableName: 'teachers' })
+@Table({ tableName: 'teacher' })
 export class Teacher extends Model<Teacher, TeacherCreationAttrs> {
   @ApiProperty({
     example: 'b70f4034-5328-4c02-b652-d4a4414f3a29',
@@ -58,8 +60,11 @@ export class Teacher extends Model<Teacher, TeacherCreationAttrs> {
   })
   role: UserRole;
 
-  @BelongsToMany(() => Discipline, () => TeacherDisciplines)
+  @BelongsToMany(() => Discipline, () => TeacherDiscipline)
   disciplines: Discipline[];
+
+  @BelongsToMany(() => Faculty, () => TeacherFaculty)
+  faculties: Faculty[];
 
   @HasMany(() => Schedule)
   schedules: Schedule[];

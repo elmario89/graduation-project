@@ -30,9 +30,6 @@ export class DisciplinesService {
       include: [
         {
           model: Teacher,
-          through: {
-            attributes: [],
-          },
         },
         {
           model: Faculty,
@@ -48,6 +45,9 @@ export class DisciplinesService {
       include: [
         {
           model: Teacher,
+        },
+        {
+          model: Faculty,
         },
       ],
     });

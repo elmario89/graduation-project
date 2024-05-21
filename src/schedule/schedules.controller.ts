@@ -84,14 +84,6 @@ export class SchedulesController {
     return this.schedulesService.getSchedulesByTeacherId(id);
   }
 
-  // @ApiOperation({ summary: 'Get schedules by id' })
-  // @ApiResponse({ status: 200, type: Schedule })
-  // @Get('/schedule/:id')
-  // @UseGuards(JwtAuthGuard)
-  // getScheduleById(@Param('id') id: string) {
-  //   return this.schedulesService.getScheduleById(id);
-  // }
-
   @ApiOperation({ summary: 'Get schedule slot' })
   @ApiResponse({ status: 200, type: Schedule })
   @Get('/discipline/:groupId/:disciplineId')

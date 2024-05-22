@@ -32,7 +32,7 @@ export class AdminGuard implements CanActivate {
       req.user = user;
       return user.role === UserRole.Admin;
     } catch (e) {
-      throw new HttpException('You are not admin', HttpStatus.FORBIDDEN);
+      throw new HttpException('Вы не в аудитории', HttpStatus.FORBIDDEN);
     }
   }
 }

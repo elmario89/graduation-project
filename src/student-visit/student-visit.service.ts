@@ -33,7 +33,7 @@ export class StudentVisitsService {
 
       if (!pointInPolygon(userAuditory, polygon)) {
         throw new HttpException(
-          'You are not inside auditory',
+          'Вы не в аудитории',
           HttpStatus.FORBIDDEN,
         );
       }

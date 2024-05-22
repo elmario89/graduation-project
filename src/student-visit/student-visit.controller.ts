@@ -4,7 +4,9 @@ import {
   Delete,
   Get,
   Param,
+  ParseArrayPipe,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -16,7 +18,7 @@ import { StudentVisit } from './student-visit.model';
 @ApiTags('StudentVisits')
 @Controller('visits')
 export class StudentVisitsController {
-  constructor(private readonly visitsService: StudentVisitsService) {}
+  constructor(private readonly visitsService: StudentVisitsService) { }
 
   @ApiOperation({ summary: 'Create visit' })
   @ApiResponse({ status: 200, type: StudentVisit })
@@ -36,35 +38,33 @@ export class StudentVisitsController {
 
   @ApiOperation({ summary: 'Create visit' })
   @ApiResponse({ status: 200, type: StudentVisit })
-  @Delete('/teacher/:id/:scheduleId/:studentId')
+  @Delete('/teacher/:id')
   @UseGuards(JwtAuthGuard)
   deleteStudentVisit(
     @Param('id') id: string,
-    @Param('scheduleId') scheduleId: string,
-    @Param('studentId') studentId: string,
   ) {
-    return this.visitsService.deleteStudentVisit({ id, scheduleId, studentId });
+    return this.visitsService.deleteStudentVisit({ id });
   }
 
   @ApiOperation({ summary: 'Get visit by schedule and student' })
   @ApiResponse({ status: 200, type: StudentVisit })
-  @Get('/student/:studentId/:scheduleId')
+  @Get('/student/:studentId')
   @UseGuards(JwtAuthGuard)
   getStudentVisitByScheduleAndStudent(
     @Param('studentId') studentId: string,
-    @Param('scheduleId') scheduleId: string,
+    @Query('scheduleIds') scheduleIds: string[],
   ) {
     return this.visitsService.getStudentVisitByScheduleAndStudent({
-      scheduleId,
+      scheduleIds,
       studentId,
     });
   }
 
-  @ApiOperation({ summary: 'Get visit by schedule and student' })
+  @ApiOperation({ summary: 'Get visit by schedule' })
   @ApiResponse({ status: 200, type: StudentVisit })
-  @Get('/schedule/:scheduleId')
+  @Get('/schedule/')
   @UseGuards(JwtAuthGuard)
-  getStudentVisitBySchedule(@Param('scheduleId') scheduleId: string) {
-    return this.visitsService.getStudentVisitBySchedule(scheduleId);
+  getStudentVisitBySchedule(@Query('scheduleIds') scheduleIds: string[]) {
+    return this.visitsService.getStudentVisitBySchedule(scheduleIds);
   }
 }

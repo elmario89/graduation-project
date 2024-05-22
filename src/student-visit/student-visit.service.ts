@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateStudentVisitDto } from './dto/create-student-visit-dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { StudentVisit } from './student-visit.model';
@@ -6,6 +6,7 @@ import { Schedule } from 'src/schedule/schedule.model';
 import { Auditory } from 'src/auditory/auditory.model';
 import * as pointInPolygon from 'point-in-polygon';
 import { GetStudentVisitByScheduleAndStudent } from './dto/get-student-visit-by-schedule-and-student-dto';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class StudentVisitsService {
@@ -26,7 +27,7 @@ export class StudentVisitsService {
       });
 
       const { lng, lat } = dto.coordinates;
-      const userAuditory = [lng, lat];
+      const userAuditory = [lat, lng];
       const polygon = coordinates.coordinates[0];
 
       if (!pointInPolygon(userAuditory, polygon)) {
@@ -35,40 +36,37 @@ export class StudentVisitsService {
           HttpStatus.FORBIDDEN,
         );
       }
-      return;
     }
-
     await this.visitRepository.create(dto);
-
-    const { scheduleId, studentId } = dto;
-
-    return this.getStudentVisitByScheduleAndStudent({ scheduleId, studentId });
   }
 
   async deleteStudentVisit(dto: {
     id: string;
-    studentId: string;
-    scheduleId: string;
   }) {
-    const { id, scheduleId, studentId } = dto;
+    const { id } = dto;
     await this.visitRepository.destroy({ where: { id } });
-
-    return this.getStudentVisitByScheduleAndStudent({ scheduleId, studentId });
   }
 
   async getStudentVisitByScheduleAndStudent(dto: GetStudentVisitByScheduleAndStudent) {
-    const { scheduleId, studentId } = dto;
+    console.log(dto, 'here')
+    const { scheduleIds, studentId } = dto;
     return await this.visitRepository.findAll({
       where: {
-        scheduleId,
         studentId,
+        scheduleId: {
+          [Op.in]: scheduleIds,
+        },
       },
     });
   }
 
-  async getStudentVisitBySchedule(scheduleId: string) {
+  async getStudentVisitBySchedule(scheduleIds: string[]) {
     return await this.visitRepository.findAll({
-      where: { scheduleId },
+      where: { 
+        scheduleId: {
+          [Op.in]: scheduleIds,
+        },
+       },
     });
   }
 }

@@ -7,6 +7,7 @@ import { Auditory } from 'src/auditory/auditory.model';
 import * as pointInPolygon from 'point-in-polygon';
 import { GetStudentVisitByScheduleAndStudent } from './dto/get-student-visit-by-schedule-and-student-dto';
 import { Op } from 'sequelize';
+import { Coordinate } from 'src/types/coordinate';
 
 @Injectable()
 export class StudentVisitsService {
@@ -14,7 +15,7 @@ export class StudentVisitsService {
     @InjectModel(StudentVisit) private visitRepository: typeof StudentVisit,
     @InjectModel(Schedule) private scheduleRepository: typeof Schedule,
     @InjectModel(Auditory) private auditoryRepository: typeof Auditory,
-  ) {}
+  ) { }
 
   async createStudentVisit(dto: CreateStudentVisitDto, forTeacher?: boolean) {
     if (!forTeacher) {
@@ -25,8 +26,8 @@ export class StudentVisitsService {
       const { coordinates } = await this.auditoryRepository.findOne({
         where: { id: auditoryId },
       });
-
       const { lng, lat } = dto.coordinates;
+
       const userAuditory = [lat, lng];
       const polygon = coordinates.coordinates[0];
 
@@ -48,7 +49,6 @@ export class StudentVisitsService {
   }
 
   async getStudentVisitByScheduleAndStudent(dto: GetStudentVisitByScheduleAndStudent) {
-    console.log(dto, 'here')
     const { scheduleIds, studentId } = dto;
     return await this.visitRepository.findAll({
       where: {
@@ -62,11 +62,11 @@ export class StudentVisitsService {
 
   async getStudentVisitBySchedule(scheduleIds: string[]) {
     return await this.visitRepository.findAll({
-      where: { 
+      where: {
         scheduleId: {
           [Op.in]: scheduleIds,
         },
-       },
+      },
     });
   }
 }

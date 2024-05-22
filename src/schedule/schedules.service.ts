@@ -77,28 +77,6 @@ export class SchedulesService {
     });
   }
 
-  // async getScheduleByTeacherId(teacherId: string) {
-  //   return await this.scheduleRepository.findAll({
-  //     where: { teacherId },
-  //     include: [
-  //       {
-  //         model: Auditory,
-  //         include: [
-  //           {
-  //             model: Building,
-  //           },
-  //         ],
-  //       },
-  //       {
-  //         model: Discipline,
-  //       },
-  //       {
-  //         model: Teacher,
-  //       },
-  //     ],
-  //   });
-  // }
-
   async getScheduleById(id: string) {
     return await this.scheduleRepository.findOne({
       where: { id },
@@ -133,6 +111,34 @@ export class SchedulesService {
         },
         {
           model: Auditory,
+        },
+        {
+          model: Group,
+        },
+        {
+          model: Teacher,
+        },
+      ],
+    });
+  }
+
+  async getScheduleByGroupAndId(
+    dto: { id: string, groupId: string },
+  ) {
+    const { id, groupId } = dto;
+    return await this.scheduleRepository.findOne({
+      where: { groupId, id },
+      include: [
+        {
+          model: Discipline,
+        },
+        {
+          model: Auditory,
+          include: [
+            {
+              model: Building,
+            },
+          ],
         },
         {
           model: Group,

@@ -75,13 +75,12 @@ export class SchedulesController {
     return this.schedulesService.getSchedulesByTeacherId(id);
   }
 
-  @ApiOperation({ summary: 'Get schedules by teacher id' })
+  @ApiOperation({ summary: 'Get schedules by group id and schedule id' })
   @ApiResponse({ status: 200, type: Schedule })
-  @Get('/teacher/:id')
+  @Get('/schedule/:id/:groupId/')
   @UseGuards(JwtAuthGuard)
-  @UseGuards(AdminGuard)
-  getScheduleByTeacherId(@Param('id') id: string) {
-    return this.schedulesService.getSchedulesByTeacherId(id);
+  getSchedulesByGroupAndId(@Param('id') id: string, @Param('groupId') groupId: string) {
+    return this.schedulesService.getScheduleByGroupAndId({ id, groupId });
   }
 
   @ApiOperation({ summary: 'Get schedule slot' })

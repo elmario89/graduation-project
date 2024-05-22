@@ -55,7 +55,7 @@ export class AuthService {
     const user = await this.getUserByRole(userDto);
 
     if (!user) {
-      throw new UnauthorizedException({ message: 'Invalid login' });
+      throw new UnauthorizedException({ message: 'Логин не существует' });
     }
 
     const passwordEquals = await compare(userDto.password, user.password);
@@ -63,6 +63,6 @@ export class AuthService {
       return user;
     }
 
-    throw new UnauthorizedException({ message: 'Invalid password' });
+    throw new UnauthorizedException({ message: 'Неправильный пароль' });
   }
 }
